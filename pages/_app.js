@@ -10,7 +10,7 @@ import {
   getDefaultWallets,
   RainbowKitProvider,
 } from '@rainbow-me/rainbowkit';
-
+import 'bootstrap/dist/css/bootstrap.css'
 import { chain, createClient, WagmiProvider } from 'wagmi';
 import {WebBundlr} from '@bundlr-network/client';
 import { useEffect, useRef, useState, useContext } from "react";
@@ -131,7 +131,7 @@ function MyApp({ Component, pageProps }) {
               <div className='row d-flex align-items-start' style={{flexDirection:"column"}}>
               
         
-          <div className='col-md-12 ' style={{height:"80vh", width:"100%"}} >
+          <div className='col-md-12 ' style={{height:"80vh", width:"100%",padding:"0"}} >
             <WagmiProvider client={wagmiClient}>
               <RainbowKitProvider chains={chains}>
                 <MainContext.Provider value={{

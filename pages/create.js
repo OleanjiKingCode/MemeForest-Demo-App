@@ -44,17 +44,30 @@ export default function Create () {
         contractInterface: MEME.abi,
         signerOrProvider: provider,
     })
+    const counter = 1;
     const router = useRouter()
+    useEffect(() => { 
+        if(counter == 1){
+            initialize()
+            console.log("first time")
+            counter +=1
+        }
+       
+    } ,[])
     useEffect(() => {
 
 
         if(!AMember){
             checkIfAMember();
             console.log(AMember)
-            fetchBalanceOfMember();
+            if (counter == 2) {
+                fetchBalanceOfMember();
+            }
+            
         
         }
     }, [AMember]);
+   
 
     const checkIfAMember = async () => {
         try {
@@ -78,7 +91,7 @@ export default function Create () {
 
     const fetchBalanceOfMember = async () => {
         try {
-            initialize();
+            
             const delay = ms => new Promise(res => setTimeout(res, ms));
             await delay(5000);
             fetchBalance();
@@ -87,15 +100,25 @@ export default function Create () {
         }
     }
 
-    const CreateMemes = async () => {
+    const CreateMemes = async (name,file,des) => {
         try {
-        await Uploading();
-       
+      
+        // await Uploading();
+        // const delay = ms => new Promise(res => setTimeout(res, ms));
+        // await delay(20000);
+        // console.log("nameLink")
+        // console.log(nameLink)
+        // let name = nameLink
+        // let des = descriptionLink
+        // let file = fileURL
         let time = new Date().toLocaleString();
-        const create = await contractWithSigner.CreateMemeItems(nameLink,person,fileURL,time,descriptionLink)
+        const create = await contractWithSigner.CreateMemeItems(name,person,file,time,des)
         await create.wait()
+        console.log(nameLink)
         setLoading(false)
         Feed();
+       
+        
         } catch (error) {
             console.log(error)
         }
@@ -103,15 +126,21 @@ export default function Create () {
 
     const Uploading = async () => {
         try {
-            let uploadOne = await bundlrInstance.uploader.upload(nameOfFile , [{name: "Content-Type", value: "text/plain"}])
             setLoading(true)
-            setNameLink(`http://arweave.net/${uploadOne.data.id}`)
+            let uploadOne = await bundlrInstance.uploader.upload(nameOfFile , [{name: "Content-Type", value: "text/plain"}])
+            let id = uploadOne.data.id;
+            setNameLink('http://arweave.net/'+ id)
+            const name = `http://arweave.net/${uploadOne.data.id}`
+
             let uploadTwo = await bundlrInstance.uploader.upload(DescriptionOfFile, [{name: "Content-Type", value: "text/plain"}])
-           
             setDescriptionLink(`http://arweave.net/${uploadTwo.data.id}`)
+            const des = `http://arweave.net/${uploadTwo.data.id}`
+
             let uploadThree = await bundlrInstance.uploader.upload(Image, [{name: "Content-Type", value: "image/png"}])
-           
             setFileURL(`http://arweave.net/${uploadThree.data.id}`)
+            const file = `http://arweave.net/${uploadThree.data.id}`
+            
+            CreateMemes(name,file,des);
             
         } catch (e) {
             console.log(e)
@@ -149,14 +178,14 @@ export default function Create () {
                         Go Back Home and Register before Uploading Memes 
                     </div>
                     <button onClick={gohome} style={{padding:"10px 15px", marginLeft:"10px",color:"black",
-                    backgroundColor:"greenyellow",fontSize:"14px", borderRadius:"10px"}}> 
+                    backgroundColor:"greenyellow",fontSize:"14px",float:"right" ,borderRadius:"10px"}}> 
                         Home
                     </button>
                 </div>
             )
         }
         if(AMember){
-            if(balance > 0.05) {
+            if(balance > 0.01) {
                 return( 
                     <div>
                         <h2>
@@ -203,7 +232,7 @@ export default function Create () {
                                 </button>
                             ) : 
                             (
-                                <button onClick={CreateMemes}  style={{border:"none", textAlign:"center", 
+                                <button onClick={Uploading}  style={{border:"none", textAlign:"center", 
                                 padding:"10px 20px",color:"white",  fontSize:"18px", 
                                 backgroundColor:"greenyellow",marginTop:"20px",marginLeft:"20px", borderRadius:"10px"}}>
                                     Create Meme
@@ -212,13 +241,12 @@ export default function Create () {
                         }
                         {
                             fileURL && 
-                            <>
-                            <a href={nameLink} target='_blank' > 1 </a>
-                            <a href={descriptionLink} target='_blank' > 2 </a>
-                            <a href={fileURL} target='_blank' > 3</a>
+                            <> {console.log(nameLink+ " " + descriptionLink + " "+ fileURL)}
+                            <a href={nameLink} target='_blank' > {nameLink} </a> <br/>
+                            <a href={descriptionLink} target='_blank' > {descriptionLink} </a><br/>
+                            <a href={fileURL} target='_blank' > {fileURL}</a>
                             </>
                         }
-                        
                     </div>
                     </div>
                     
@@ -227,11 +255,11 @@ export default function Create () {
             {
                 return(
                     <div>
-                    <h3>
+                    <div style={{fontSize:"18px"}}>
                         Go To Fund Your Account before Uploading Memes 
-                    </h3>
+                    </div>
                     <button onClick={Fund} style={{padding:"10px 15px", marginLeft:"10px",color:"black",
-                    backgroundColor:"greenyellow",fontSize:"18px", borderRadius:"10px"}}> 
+                    backgroundColor:"greenyellow",fontSize:"14px",float:"right" ,borderRadius:"10px"}}> 
                         Fund
                     </button>
                 </div>
@@ -257,9 +285,9 @@ export default function Create () {
             <ConnectButton />
           </div>
         </div>
-          <main className={styles.main}>
+          {/* <main className={styles.main}> */}
               {renderButton()}
-          </main>
+          {/* </main> */}
     
           
         </div>

@@ -10,6 +10,9 @@ import { MainContext } from '../context';
 import { ethers,providers, Contract } from "ethers";
 import MEME from '../artifacts/contracts/MemeForest.sol/MemeForest.json'
 import { useRouter } from 'next/router';
+import 'bootstrap/dist/css/bootstrap.css'
+
+
 
 
 export default function Feed () {
@@ -44,32 +47,143 @@ export default function Feed () {
         contractInterface: MEME.abi,
         signerOrProvider: provider,
     })
+    useEffect(() => {
+    
 
+      
+            fetchAllMemes();
+            // ToText();
+        
+       
+    }, []);
     const fetchAllMemes = async () => {
         try {
             const data= await contractWithProvider.fetchAllMemes();
             const tx = await Promise.all(data.map(async i => {
+                const Names = renderElement(i.NameLink)
                 let List = {
-                    Name: i.NameLink,
+                    // Name: (renderElement(i.NameLink)),
+                    Name:Names,
                     AddressOfOwner : i.Owner,
-                    Id :i.fileId,
+                    Id :i.fileId.toNumber(),
                     File: i.fileLink,
-                    IsStarred:starred,
-                    NumberOfStars:i.Stars,
-                    NumberOfLikes:i.Likes,
+                    IsStarred:i.starred,
+                    NumberOfStars:i.Stars.toNumber(),
+                    NumberOfLikes:i.Likes.toNumber(),
                     Date:i.DateOfCreation,
                     Description:i.DescriptionLink
                 }
                 return List
             }));
             setMemes(tx);
-
+            console.log(tx)
         } catch (e) {
             console.log(e)
         }
     }
 
-    return(
+     const ToText = async(url) =>{
+        fetch(url)
+        .then(function(response){
+            response.text().then(function(text){
+                console.log(text)
+                // setNameOfFile(text);
+                return text;
+                
+            })
+            
+        })
+       
+    }
+    const renderElement =  (url) => {
+        if (url!= "" ){
+            fetch(url)
+        .then(response => response.text())
+        .then(data => {
+        //    
+        // let Dat = data
+        //     setNameOfFile(Dat)  
+        return data
+        });
+        }
+        
+    }
+    const DescriptionText =  (url) => {
+        if (url!= ""){
+            fetch(url)
+        .then(response => response.text())
+        .then(data => {
+           return data
+            // setDescriptionOfFile(data) 
+        });
+        }
+        
+    }
+    const renderButton = () => {
+        if(memes.length == 0) {
+            return (
+                <h4>
+                    There are no Memes For Display
+                </h4>
+            )
+        }
+        if (memes.length >0){
+            return(
+                <div>
+                    {
+                        memes.map((card,i) => {
+                            // renderElement(card.Name)
+                            return( 
+                                <div key={i} className='d-flex'>
+                                     
+                                    {
+                                        (!card.Name == " " && !card.Description == " ") &&
+                                       
+                                  
+                                     <div className='col-md-3'> 
+                                   <div className='card' style={{width:"18rem"}}>
+                                       
+                                          <img src={card.File} className="card-img-top" alt="..."/>
+                                        <div>
+                                            <div>
+                                               
+                                                {/* {setNameOfFile( renderElement(card.Name)) } */}
+                                                {card.Name}
+                                                {/* {console.log(renderElement(card.Name)
+                                                )} */}
+                                            </div>
+                                          
+                                            <div>
+                                                {/* {DescriptionText(card.Description)} */}
+                                            {/* {setDescriptionLink(renderElement(card.Description)) } */}
+                                        
+                                                {/* {DescriptionOfFile} */}
+                                                {/* {console.log(DescriptionOfFile)} */}
+                                            </div>
+                                            {
+                                            console.log("ascnkasnckl")
+                                        }
+                                        </div>
+                                       
+                                            <div >Date : {card.Date}</div>
+                                            <div >Stars:{card.NumberOfStars}</div>
+                                            <div >Likes: {card.NumberOfLikes}</div> 
+                                       
+                                      
+                                        </div> 
+                                    </div>
+                        }
+                                </div>
+                                
+                            )
+                        })
+                    }
+                </div>
+            ) 
+        }
+    }
+
+    return (
         <div className={styles.container}>
           <Head>
             <title>Home</title>
@@ -90,5 +204,5 @@ export default function Feed () {
     
           
         </div>
-    )
+      )
 }

@@ -43,7 +43,7 @@ describe("Greeter", function () {
     await meme.connect(thirdone).LikeMeme("1");
 
     console.log("staring meme")
-    await meme.connect(buyerAddress).StarMeme("2", addr);
+    await meme.connect(buyerAddress).StarMeme("2");
 
 
     console.log("fetching starred memes right now...............")

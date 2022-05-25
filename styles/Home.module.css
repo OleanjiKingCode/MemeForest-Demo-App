@@ -2,7 +2,7 @@
 
 
 .container {
-  padding: 0 2rem;
+  /* padding: 0 2rem; */
 }
 
 .table{
@@ -53,8 +53,7 @@
   /* height: 0px; */
 }
 .main {
-  min-height: 100vh;
-  
+  height: inherit;
   flex: 1;
   display: flex;
   flex-direction: column;
@@ -182,14 +181,14 @@
   font-size:24px ;
 }
 .topper{
-  margin-left: -47px;
-  position: absolute;
-  width: 100%;
+  /* margin-left: -45px; */
+  /* position: absolute; */
+  width: inherit;
   height: 100px;
   background-color: rgb(223, 223, 223);
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
 }
 
 .Logo{

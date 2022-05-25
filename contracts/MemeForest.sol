@@ -133,15 +133,16 @@ contract MemeForest is ReentrancyGuard{
     function fetchAllMemes() public view returns(MemeFiles[] memory) {
 
         uint currentMemeNum = NumOfAllMemes.current();
-        uint currentIndex = 0;
+
+        uint currentIndex = currentMemeNum;
         MemeFiles[] memory memes = new MemeFiles[] (currentMemeNum);
 
-        for (uint256 index = currentMemeNum; index < 0; index--) {
-            uint currenNum = IdMemeFiles[index].fileId;
+        for (uint256 index = 0; index < currentMemeNum; index++) {
+            uint currenNum = IdMemeFiles[index +1].fileId;
             MemeFiles storage memeFiles = IdMemeFiles[currenNum];
 
-            memes[currentIndex] = memeFiles;
-            currentIndex+=1;
+            memes[currentIndex - 1] = memeFiles;
+            currentIndex-=1;
 
             
         }
