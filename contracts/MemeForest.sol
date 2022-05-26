@@ -25,15 +25,14 @@ contract MemeForest is ReentrancyGuard{
     mapping(address => mapping(uint => bool )) private DidyouStar;
 
     struct MemeFiles {
-        string NameLink;
+        string Memeinfo;
         address Owner;
         uint fileId;
-        string fileLink;
         bool starred;
         uint Stars;
         uint Likes;
         string DateOfCreation;
-        string DescriptionLink;
+      
     }
 
     mapping (uint => MemeFiles) private IdMemeFiles;
@@ -99,24 +98,22 @@ contract MemeForest is ReentrancyGuard{
         return member;
     }
 
-    function CreateMemeItems(string memory _nameLink, 
+    function CreateMemeItems( string memory memeinfo,
     address _owner, 
-    string memory _fileLink,
-    string memory _date, 
-    string memory _descriptionLink) 
+    string memory _date
+    ) 
     public nonReentrant{
         NumOfAllMemes.increment();
         uint256 currentMeme =  NumOfAllMemes.current();
         IdMemeFiles[currentMeme] = MemeFiles(
-            _nameLink,
+            memeinfo,
             _owner,
             currentMeme,
-            _fileLink,
             false,
             0,
             0,
-            _date,
-            _descriptionLink
+            _date
+            
 
         );
          uint currentMemberNum = NumOfAllMembers.current();

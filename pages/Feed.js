@@ -9,8 +9,8 @@ import { useEffect, useRef, useState, useContext } from "react";
 import { MainContext } from '../context';
 import { ethers,providers, Contract } from "ethers";
 import MEME from '../artifacts/contracts/MemeForest.sol/MemeForest.json'
-import { useRouter } from 'next/router';
 import 'bootstrap/dist/css/bootstrap.css'
+import axios from "axios"
 
 
 
@@ -48,30 +48,25 @@ export default function Feed () {
         signerOrProvider: provider,
     })
     useEffect(() => {
-    
-
-      
             fetchAllMemes();
-            // ToText();
-        
-       
     }, []);
     const fetchAllMemes = async () => {
         try {
             const data= await contractWithProvider.fetchAllMemes();
             const tx = await Promise.all(data.map(async i => {
-                const Names = renderElement(i.NameLink)
+                const Info = await axios.get(i.Memeinfo)
+              
                 let List = {
-                    // Name: (renderElement(i.NameLink)),
-                    Name:Names,
+                    
+                    Name:Info.data.nameOfFile,
                     AddressOfOwner : i.Owner,
                     Id :i.fileId.toNumber(),
-                    File: i.fileLink,
+                    File: Info.data.image,
                     IsStarred:i.starred,
                     NumberOfStars:i.Stars.toNumber(),
                     NumberOfLikes:i.Likes.toNumber(),
                     Date:i.DateOfCreation,
-                    Description:i.DescriptionLink
+                    Description:Info.data.DescriptionOfFile,
                 }
                 return List
             }));
@@ -82,43 +77,41 @@ export default function Feed () {
         }
     }
 
-     const ToText = async(url) =>{
-        fetch(url)
-        .then(function(response){
-            response.text().then(function(text){
-                console.log(text)
-                // setNameOfFile(text);
-                return text;
+    //  const ToText = async(url) =>{
+    //     fetch(url)
+    //     .then(function(response){
+    //         response.text().then(function(text){
+    //             console.log(text)
+              
+    //             return text;
                 
-            })
+    //         })
             
-        })
+    //     })
        
-    }
-    const renderElement =  (url) => {
-        if (url!= "" ){
-            fetch(url)
-        .then(response => response.text())
-        .then(data => {
-        //    
-        // let Dat = data
-        //     setNameOfFile(Dat)  
-        return data
-        });
-        }
+    // }
+    // const renderElement =  (url) => {
+    //     if (url!= "" ){
+    //         fetch(url)
+    //     .then(response => response.text())
+    //     .then(data => {
         
-    }
-    const DescriptionText =  (url) => {
-        if (url!= ""){
-            fetch(url)
-        .then(response => response.text())
-        .then(data => {
-           return data
-            // setDescriptionOfFile(data) 
-        });
-        }
+    //     return data
+    //     });
+    //     }
         
-    }
+    // }
+    // const DescriptionText =  (url) => {
+    //     if (url!= ""){
+    //         fetch(url)
+    //     .then(response => response.text())
+    //     .then(data => {
+    //        return data
+    //         // setDescriptionOfFile(data) 
+    //     });
+    //     }
+        
+    // }
     const renderButton = () => {
         if(memes.length == 0) {
             return (
@@ -132,49 +125,29 @@ export default function Feed () {
                 <div>
                     {
                         memes.map((card,i) => {
-                            // renderElement(card.Name)
-                            return( 
-                                <div key={i} className='d-flex'>
-                                     
+                            return(  
+                                <div key={i} className='d-flex'>   
                                     {
                                         (!card.Name == " " && !card.Description == " ") &&
-                                       
-                                  
-                                     <div className='col-md-3'> 
-                                   <div className='card' style={{width:"18rem"}}>
-                                       
-                                          <img src={card.File} className="card-img-top" alt="..."/>
-                                        <div>
-                                            <div>
-                                               
-                                                {/* {setNameOfFile( renderElement(card.Name)) } */}
-                                                {card.Name}
-                                                {/* {console.log(renderElement(card.Name)
-                                                )} */}
-                                            </div>
-                                          
-                                            <div>
-                                                {/* {DescriptionText(card.Description)} */}
-                                            {/* {setDescriptionLink(renderElement(card.Description)) } */}
-                                        
-                                                {/* {DescriptionOfFile} */}
-                                                {/* {console.log(DescriptionOfFile)} */}
-                                            </div>
-                                            {
-                                            console.log("ascnkasnckl")
-                                        }
+                                        <div className='col-md-3'> 
+                                            <div className='card' style={{width:"18rem"}}>
+                                            <img src={card.File} className="card-img-top" alt="..."/>
+                                                <div>
+                                                    <div>
+                                                        {card.Name} 
+                                                    </div>
+                                                    <div>
+                                                        {card.Description} 
+                                                    </div>
+                                                   
+                                                </div>
+                                                <div >Date : {card.Date}</div>
+                                                <div >Stars:{card.NumberOfStars}</div>
+                                                <div >Likes: {card.NumberOfLikes}</div> 
+                                            </div> 
                                         </div>
-                                       
-                                            <div >Date : {card.Date}</div>
-                                            <div >Stars:{card.NumberOfStars}</div>
-                                            <div >Likes: {card.NumberOfLikes}</div> 
-                                       
-                                      
-                                        </div> 
-                                    </div>
-                        }
+                                    }
                                 </div>
-                                
                             )
                         })
                     }

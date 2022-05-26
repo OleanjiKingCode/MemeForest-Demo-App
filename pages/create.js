@@ -31,7 +31,10 @@ export default function Create () {
     const [Image, setImage] = useState()
     const [viewing,setViewing] = useState()
     const[loading, setLoading] = useState(false)
+    const [nameText,setNameText] = useState ("")
+    const [desText, setDesText] = useState("")
     const provider = useProvider()
+    const N = []
     const { data: signer, isError, isLoading } = useSigner()
     const contractWithSigner = useContract({
         addressOrName: MemeForestAddress,
@@ -63,7 +66,7 @@ export default function Create () {
             if (counter == 2) {
                 fetchBalanceOfMember();
             }
-            
+           
         
         }
     }, [AMember]);
@@ -100,25 +103,38 @@ export default function Create () {
         }
     }
 
-    const CreateMemes = async (name,file,des) => {
+    const CreateMemes = async (memeInfo) => {
         try {
-      
-        // await Uploading();
-        // const delay = ms => new Promise(res => setTimeout(res, ms));
-        // await delay(20000);
-        // console.log("nameLink")
-        // console.log(nameLink)
-        // let name = nameLink
-        // let des = descriptionLink
-        // let file = fileURL
-        let time = new Date().toLocaleString();
-        const create = await contractWithSigner.CreateMemeItems(name,person,file,time,des)
-        await create.wait()
-        console.log(nameLink)
-        setLoading(false)
-        Feed();
-       
-        
+        //    await renderElement(name)
+        //    await renderElement(des)
+            // console.log(NDD)
+            // fetch(name)
+            // .then(function(response) {
+            //     response.text().then((text) => {
+            //     N=text;
+            //     setNameText(text)
+            //    console.log(text)
+            //     });
+            //     return text
+            // });
+            
+            // fetch(des)
+            // .then(function(response) {
+            //     response.text().then(function(text) {
+            //         // DescriptionText = text;
+            //         setDesText(text)
+            //         console.log(text) 
+            //     });
+            //     // const NameText = response.text()
+            // });            
+            // console.log(nameText);
+           console.log(N)
+            // console.log(NameText + DescriptionText)
+            let time = new Date().toLocaleString();
+            const create = await contractWithSigner.CreateMemeItems(memeInfo,person,time)
+            await create.wait()
+            setLoading(false)
+            Feed();
         } catch (error) {
             console.log(error)
         }
@@ -127,20 +143,29 @@ export default function Create () {
     const Uploading = async () => {
         try {
             setLoading(true)
-            let uploadOne = await bundlrInstance.uploader.upload(nameOfFile , [{name: "Content-Type", value: "text/plain"}])
-            let id = uploadOne.data.id;
-            setNameLink('http://arweave.net/'+ id)
-            const name = `http://arweave.net/${uploadOne.data.id}`
+            // let uploadOne = await bundlrInstance.uploader.upload(nameOfFile , [{name: "Content-Type", value: "text/plain"}])
+            // let id = uploadOne.data.id;
+            // setNameLink('http://arweave.net/'+ id)
+            // const name = `http://arweave.net/${uploadOne.data.id}`
 
-            let uploadTwo = await bundlrInstance.uploader.upload(DescriptionOfFile, [{name: "Content-Type", value: "text/plain"}])
-            setDescriptionLink(`http://arweave.net/${uploadTwo.data.id}`)
-            const des = `http://arweave.net/${uploadTwo.data.id}`
+            // let uploadTwo = await bundlrInstance.uploader.upload(DescriptionOfFile, [{name: "Content-Type", value: "text/plain"}])
+            // setDescriptionLink(`http://arweave.net/${uploadTwo.data.id}`)
+            // const des = `http://arweave.net/${uploadTwo.data.id}`
 
-            let uploadThree = await bundlrInstance.uploader.upload(Image, [{name: "Content-Type", value: "image/png"}])
-            setFileURL(`http://arweave.net/${uploadThree.data.id}`)
-            const file = `http://arweave.net/${uploadThree.data.id}`
-            
-            CreateMemes(name,file,des);
+            let upload = await bundlrInstance.uploader.upload(Image, [{name: "Content-Type", value: "image/png"}])
+            setFileURL(`http://arweave.net/${upload.data.id}`)
+            const file = `http://arweave.net/${upload.data.id}`
+
+            const data = JSON.stringify ({
+                nameOfFile, 
+                DescriptionOfFile, 
+                image:file
+            })
+            let uploadTwo = await bundlrInstance.uploader.upload(data, [{name: "Content-Type", value: "text/plain"}])
+            const MemeInfo = `http://arweave.net/${uploadTwo.data.id}`
+            console.log(data)
+            console.log(MemeInfo)
+            CreateMemes(MemeInfo);
             
         } catch (e) {
             console.log(e)
@@ -156,6 +181,18 @@ export default function Create () {
         router.push('/Feed')
     }
 
+    const renderElement = async(url) => {
+        fetch(url)
+        .then(function(response) {
+            response.text().then(function(text) {
+               
+               N.push(text)
+            });
+            // const NameText = response.text()
+        });  
+        
+        console.log(N)
+    }
     function OnFileChange(e) {
         const file = e.target.files[0]
         if(file){
