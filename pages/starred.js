@@ -37,11 +37,15 @@ export default function Starred () {
     });
     const router = useRouter()
 
-
     useEffect(() => {
+        
+        fetchAllStarredMemes();
+}, []);
+    useEffect(() => {
+       
         if(!AMember){
             checkIfAMember();
-            fetchAllStarredMemes();
+            
         }
     }, [AMember]);
    
@@ -66,15 +70,15 @@ export default function Starred () {
         }
     }
 
-
     const fetchAllStarredMemes = async () => {
-        try {
+       
             const data= await contractWithProvider.fetchMyStarredMemes(person);
-            const tx = await Promise.all(data.map(async i => { 
-               
-                const Info = await axios.get(i.Memeinfo)
-                console.log("yooooooooooooooooooooooo")
+            const tx = await Promise.all(data.map(async i => {
+                const Info = await axios.get('http://arweave.net/uwMLTswvNAFvEYFCNYcm5bsOva7DN75kDme8SBM6wdU')
+                console.log(i.Memeinfo)
                 const StarAnswer= await contractWithProvider.WhatDidIStar(i.fileId,person);
+                const LikeAnswer= await contractWithProvider.WhatDidILike(i.fileId,person);
+                
                 let List = {
                     
                     Name:Info.data.nameOfFile,
@@ -86,33 +90,31 @@ export default function Starred () {
                     NumberOfLikes:i.Likes.toNumber(),
                     Date:i.DateOfCreation,
                     Description:Info.data.DescriptionOfFile,
-                    DidMemberStarMe: StarAnswer
-                   
+                    DidMemberStarMe: StarAnswer,
+                    DidMemberLikeMe:LikeAnswer
                 }
                 return List
             }));
             setStarredMemes(tx);
-        }
-        catch (error){
-            console.log(error)
-        }
-
+        
     }
-    const StarMeme = async (id) =>{
+
+    
+    const StarMeme = async (id,bool) =>{
         try {
             console.log(Startoggler)
-            if (Startoggler) {
+            if (bool == true) {
                 // unstarring
                 const data= await contractWithSigner.RemoveStarMeme(id)
                 await data.wait()
-                await fetchAllStarredMemes();
-                setStarToggler(false)
+                await fetchAllMemes();
+                // setStarToggler(false)
             }
             else {
                 const data= await contractWithSigner.StarMeme(id)
                 await data.wait()
-                await fetchAllStarredMemes();
-                setStarToggler(true)
+                await fetchAllMemes();
+                // setStarToggler(true)
             }
             
 
@@ -188,7 +190,7 @@ export default function Starred () {
                             return(  
                                 <div key={i} className='col-md-3 p-3'>   
                                     {
-                                        (!card.Name == " " && !card.Description == " ") &&
+                                        (!card.Name == " " && !card.Description == " " && card.NumberOfStars >= 1) &&
 
                                             <div className={styles.Memebox} style={{borderRadius:"25px", height:"auto",padding:"10px"}}>
                                                 <div className='d-flex align-items-center justify-content-center'  style={{borderRadius:"15px",height:"150px",overflow:"hidden"/*, backgroundImage:`url(${card.File})`, backgroundSize:"cover",backgroundPosition:"center"*/}}>
@@ -214,7 +216,7 @@ export default function Starred () {
                                                     </div>
                                                     <div className='' >
                                                     
-                                                         <button className={styles.ToggleButton} onClick={() => StarMeme(card.Id)}
+                                                         <button className={styles.ToggleButton} onClick={() => StarMeme(card.Id, card.DidMemberStarMe)}
                                                          style={{borderRadius:"5px",border:"1px black solid",width:"100%",height:"30px",marginTop:"13px",display:"flex",alignItems:"center", justifyContent:"space-around"}}>
                                                             { 
                                                             // This was complicated for me when getting the logic lol
@@ -239,23 +241,27 @@ export default function Starred () {
                                                                 ) 
                                                                 :
                                                                 (
+                                                                    // <>
+                                                                    // {
+                                                                    //     Startoggler ? 
+                                                                    //     (
+                                                                    //         <>
+                                                                    //         <img src='./filledStar.png' alt='STAR'  style={{width:"20px",height:"20px"}}  />
+                                                                    //         {card.NumberOfStars}
+                                                                    //         </>
+                                                                    //     ) 
+                                                                    //     : 
+                                                                    //     (
+                                                                    //         <>
+                                                                    //         <img src='./strokeStar.png' alt='STAR' style={{width:"20px",height:"20px"}}  />
+                                                                    //         {card.NumberOfStars}
+                                                                    //         </>
+                                                                    //     )
+                                                                    // }
+                                                                    // </>
                                                                     <>
-                                                                    {
-                                                                        Startoggler ? 
-                                                                        (
-                                                                            <>
-                                                                            <img src='./filledStar.png' alt='STAR'  style={{width:"20px",height:"20px"}}  />
-                                                                            {card.NumberOfStars}
-                                                                            </>
-                                                                        ) 
-                                                                        : 
-                                                                        (
-                                                                            <>
                                                                             <img src='./strokeStar.png' alt='STAR' style={{width:"20px",height:"20px"}}  />
                                                                             {card.NumberOfStars}
-                                                                            </>
-                                                                        )
-                                                                    }
                                                                     </>
                                                                 )
                                                             }
