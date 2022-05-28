@@ -23,6 +23,7 @@ contract MemeForest is ReentrancyGuard{
     mapping(uint => MemeMembers) private IdMembers;
     mapping(address => bool) private alreadyAMember;
     mapping(address => mapping(uint => bool )) private DidyouStar;
+    mapping(address => mapping(uint => bool )) private DidyouLike;
 
     struct MemeFiles {
         string Memeinfo;
@@ -152,6 +153,7 @@ contract MemeForest is ReentrancyGuard{
             if(_id == IdMemeFiles[i+1].fileId) {
               
                 IdMemeFiles[i+1].Likes+=1;
+                 DidyouLike[msg.sender][_id]= true;
                 
                
             }
@@ -164,12 +166,19 @@ contract MemeForest is ReentrancyGuard{
             if(_id == IdMemeFiles[i+1].fileId) {
               
                 IdMemeFiles[i+1].Likes-=1;
+                  DidyouLike[msg.sender][_id]= false;
                 
                
             }
         }
 
     }
+    
+    function WhatDidILike (uint _id, address sender) public view returns (bool) {
+         bool youLiked =  DidyouLike[sender][_id];
+         return youLiked;
+    }
+
     function StarMeme(uint _id ) public {
         uint currentMemeNum = NumOfAllMemes.current();
         
@@ -184,6 +193,8 @@ contract MemeForest is ReentrancyGuard{
         }
 
     }
+
+    
     function RemoveStarMeme(uint _id) public {
         uint currentMemeNum = NumOfAllMemes.current();
         
@@ -199,56 +210,46 @@ contract MemeForest is ReentrancyGuard{
 
     }
 
+    function WhatDidIStar (uint _id, address sender) public view returns (bool) {
+         bool youStarred =  DidyouStar[sender][_id];
+         return youStarred;
+    }
 
-    function fetchMyStarredMemes() public view returns (MemeFiles[] memory) {
+    function fetchMyStarredMemes(address sender) public view returns (MemeFiles[] memory) {
         uint currentMemeNum = NumOfAllMemes.current();
-        uint currentIndex = 0;
+        uint currentIndex = currentMemeNum;
         MemeFiles[] memory memes = new MemeFiles[] (currentMemeNum);
         for (uint i = 0; i < currentMemeNum; i++) {
             uint id = IdMemeFiles[i+1].fileId;
-            address person = msg.sender;
+            address person = sender;
             if(DidyouStar[person][id] == true && IdMemeFiles[i+1].starred== true ){
             MemeFiles storage memeFiles = IdMemeFiles[id];
 
-            memes[currentIndex] = memeFiles;
-            currentIndex+=1;
+            memes[currentIndex - 1] = memeFiles;
+            currentIndex-=1;
             }
         }
         return memes;
     }
 
-    function fetchMyMeme() public view returns (MemeFiles[] memory) {
-        address Sender = msg.sender;
+    function fetchMyMeme(address sender) public view returns (MemeFiles[] memory) {
+        address Sender = sender;
         uint currentMemeNum = NumOfAllMemes.current();
-        uint currentIndex = 0;
+        uint currentIndex = currentMemeNum;
         MemeFiles[] memory memes = new MemeFiles[] (currentMemeNum);
          for (uint i = 0; i < currentMemeNum; i++) {
              uint id = IdMemeFiles[i+1].fileId;
              if( IdMemeFiles[id].Owner == Sender ){
                  
-                  MemeFiles storage memeFiles = IdMemeFiles[id];
+            MemeFiles storage memeFiles = IdMemeFiles[id];
 
-            memes[currentIndex] = memeFiles;
-            currentIndex+=1;
+            memes[currentIndex - 1] = memeFiles;
+            currentIndex-=1;
              }
          }
          return memes;
     }
 
-    // function getNumberOfUploads (address _member) external returns (uint)
-    // {
-    //     address Sender = _member;
-    //     uint currentMemeNum = NumOfAllMemes.current();
-    //         for (uint i = 0; i < currentMemeNum; i++) 
-    //         {
-    //             uint id = IdMemeFiles[i+1].fileId;
-    //             if( IdMemeFiles[id].Owner == Sender )
-    //             { 
-    //                 NumberOfUploads+=1;
-    //             }
-    //         }
-        
-    //     return NumberOfUploads;
-    // }
+ 
 } 
 

@@ -94,7 +94,6 @@ export default function Create () {
 
     const fetchBalanceOfMember = async () => {
         try {
-            
             const delay = ms => new Promise(res => setTimeout(res, ms));
             await delay(5000);
             fetchBalance();
@@ -105,31 +104,8 @@ export default function Create () {
 
     const CreateMemes = async (memeInfo) => {
         try {
-        //    await renderElement(name)
-        //    await renderElement(des)
-            // console.log(NDD)
-            // fetch(name)
-            // .then(function(response) {
-            //     response.text().then((text) => {
-            //     N=text;
-            //     setNameText(text)
-            //    console.log(text)
-            //     });
-            //     return text
-            // });
-            
-            // fetch(des)
-            // .then(function(response) {
-            //     response.text().then(function(text) {
-            //         // DescriptionText = text;
-            //         setDesText(text)
-            //         console.log(text) 
-            //     });
-            //     // const NameText = response.text()
-            // });            
-            // console.log(nameText);
-           console.log(N)
-            // console.log(NameText + DescriptionText)
+        
+         
             let time = new Date().toLocaleString();
             const create = await contractWithSigner.CreateMemeItems(memeInfo,person,time)
             await create.wait()
@@ -143,14 +119,7 @@ export default function Create () {
     const Uploading = async () => {
         try {
             setLoading(true)
-            // let uploadOne = await bundlrInstance.uploader.upload(nameOfFile , [{name: "Content-Type", value: "text/plain"}])
-            // let id = uploadOne.data.id;
-            // setNameLink('http://arweave.net/'+ id)
-            // const name = `http://arweave.net/${uploadOne.data.id}`
-
-            // let uploadTwo = await bundlrInstance.uploader.upload(DescriptionOfFile, [{name: "Content-Type", value: "text/plain"}])
-            // setDescriptionLink(`http://arweave.net/${uploadTwo.data.id}`)
-            // const des = `http://arweave.net/${uploadTwo.data.id}`
+           
 
             let upload = await bundlrInstance.uploader.upload(Image, [{name: "Content-Type", value: "image/png"}])
             setFileURL(`http://arweave.net/${upload.data.id}`)
@@ -181,18 +150,7 @@ export default function Create () {
         router.push('/Feed')
     }
 
-    const renderElement = async(url) => {
-        fetch(url)
-        .then(function(response) {
-            response.text().then(function(text) {
-               
-               N.push(text)
-            });
-            // const NameText = response.text()
-        });  
-        
-        console.log(N)
-    }
+    
     function OnFileChange(e) {
         const file = e.target.files[0]
         if(file){
@@ -210,12 +168,12 @@ export default function Create () {
     const renderButton = () =>{
         if(!AMember){
             return (
-                <div>
+                <div style={{ padding:"20px", textAlign:"center",margin:"5px 0 5px 0" }}> 
                     <div style={{fontSize:"18px"}}>
                         Go Back Home and Register before Uploading Memes 
                     </div>
-                    <button onClick={gohome} style={{padding:"10px 15px", marginLeft:"10px",color:"black",
-                    backgroundColor:"greenyellow",fontSize:"14px",float:"right" ,borderRadius:"10px"}}> 
+                    <button onClick={gohome} style={{padding:"10px 15px", marginLeft:"10px",color:"black",marginTop:"10px",
+                    backgroundColor:"greenyellow",fontSize:"14px",borderRadius:"10px"}}> 
                         Home
                     </button>
                 </div>
@@ -224,28 +182,35 @@ export default function Create () {
         if(AMember){
             if(balance > 0.01) {
                 return( 
-                    <div>
-                        <h2>
+                    <div className={styles.Memebox} style={{borderRadius:"25px", padding:"20px", textAlign:"center",margin:"5px 0 5px 0" }}> 
+                        <h3>
                             UPLOAD YOUR MEME 
-                        </h2>
+                        </h3>
                         <div className={styles.createBox}>
-                        <div>
+                        <div style={{padding:"10px", margin:"15px",  display:"flex", alignItems:"center", justifyContent:"space-between"}}>
+                            <div style={{textAlign:"left"}}>
                             Name: 
+                            </div>
+                           
                             <input type='text' 
                              placeholder='Name Of Meme'
                              onChange={e => setNameOfFile(e.target.value)}
                              style={{padding:"10px", border:"1px solid black" , marginLeft:"20px",borderRadius:"10px",width:"400px", fontSize:"10px"}}
                            />
                         </div>
-                        <div>
+                        <div style={{padding:"10px", margin:"15px", display:"flex", alignItems:"center", justifyContent:"space-between"}}>
+                            <div style={{textAlign:"left"}}>
                             File: 
+                            </div>
                             <input type='file' 
                              onChange={OnFileChange}
                              style={{padding:"10px", border:"1px solid black" , marginLeft:"20px",borderRadius:"10px",width:"400px", fontSize:"10px"}}
                            />
                         </div>
-                        <div>
-                            Description: 
+                        <div style={{padding:"10px", margin:"15px", display:"flex", alignItems:"center", justifyContent:"space-between"}}>
+                            <div style={{textAlign:"left"}}>
+                                 Description: 
+                            </div>
                             <input type='Describe your meme' 
                              placeholder='Name Of Meme'
                              onChange={e => setDescriptionOfFile(e.target.value)}
@@ -291,12 +256,12 @@ export default function Create () {
             }
             {
                 return(
-                    <div>
+                    <div style={{ padding:"20px", textAlign:"center",margin:"5px 0 5px 0" }}> 
                     <div style={{fontSize:"18px"}}>
-                        Go To Fund Your Account before Uploading Memes 
+                        Go To Fund Your Account before Uploading Memes as its lower than 0.01 
                     </div>
-                    <button onClick={Fund} style={{padding:"10px 15px", marginLeft:"10px",color:"black",
-                    backgroundColor:"greenyellow",fontSize:"14px",float:"right" ,borderRadius:"10px"}}> 
+                    <button onClick={Fund} style={{padding:"10px 15px", marginLeft:"10px",color:"black", marginTop:"10px",
+                    backgroundColor:"greenyellow",fontSize:"14px",borderRadius:"10px"}}> 
                         Fund
                     </button>
                 </div>
@@ -322,9 +287,9 @@ export default function Create () {
             <ConnectButton />
           </div>
         </div>
-          {/* <main className={styles.main}> */}
+          <div className={styles.mains}>
               {renderButton()}
-          {/* </main> */}
+          </div>
     
           
         </div>

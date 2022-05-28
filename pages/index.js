@@ -48,7 +48,7 @@ export default function Home() {
 
         if(!AMember){
            checkIfAMember();
-         console.log(AMember)
+        
          setInterval( async () => {
              await fetchByAddress()
          }, 5*1000);
@@ -58,11 +58,12 @@ export default function Home() {
 
   const joinMembership = async () => {
     try {
-      let _time =  new Date().toLocaleString();
-      console.log(_time);
-    
-      const join = await contractWithSigner.CreateMembers(name, _time)
       setLoading(true)
+      let _time =  new Date().toLocaleString();
+      
+      
+      const join = await contractWithSigner.CreateMembers(name, _time)
+      
       await join.wait()
       setLoading(false)
       setAMember(true)
@@ -96,7 +97,7 @@ export default function Home() {
       
       console.log(fundedamount)
       const funded = await bundlrInstance.fund(fundedamount)
-      window.alert("you just funded your account with: " , funded)
+     
       fetchBalance()
       
     } catch (error) {
@@ -107,7 +108,7 @@ export default function Home() {
    const fetchByAddress = async () => {
     try {
       const data= await contractWithProvider.fetchMembers();
-      console.log("this is working");
+    
       const tx = await Promise.all(data.map(async i =>{
          let list = {
           Name : i.Name,
@@ -126,12 +127,12 @@ export default function Home() {
 
   const checkIfAMember = async () => {
     try {
-      console.log(person)
+     
       const tx= await contractWithProvider.IsAMember(person)
      
       console.log(tx)
       if(tx) {
-        console.log("scnmksjfnw")
+     
         setAMember(true)
       }
       else{
@@ -148,7 +149,7 @@ export default function Home() {
 const renderButton = () => {
 
   if (AMember && !haveInitialised) {
-    console.log(haveInitialised)
+    
     return(
      <div>
       <button onClick={Initialize}  style={{border:"none", textAlign:"center", 
@@ -243,7 +244,7 @@ const renderButton = () => {
               <button onClick={joinMembership}  style={{border:"none", textAlign:"center", 
                 padding:"10px 20px",color:"white",  fontSize:"10px", 
                 backgroundColor:"blue",marginTop:"20px", marginLeft:"20px", borderRadius:"10px"}}>
-                  Become A Memer
+                  Become A Member
               </button>    
             )
         }       
@@ -266,22 +267,21 @@ const renderButton = () => {
         <meta name="description" content="By Oleanji" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-    <div className={styles.topper} >
-      <div className={styles.Logo} >
-
+    <div className={styles.topper}>
+      <div className={styles.Logo}>
       </div>
       <div className={styles.connect}>
         <ConnectButton />
       </div>
     </div>
-      <main className={styles.main}>
+      <div  className={styles.main}> 
         <h3 className={styles.title}>
           Welcome to Meme Forest
         </h3>
           {renderButton()}
         
 
-      </main>
+      </div>
 
       
     </div>

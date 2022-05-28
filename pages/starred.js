@@ -1,32 +1,29 @@
 import Head from 'next/head'
-import Image from 'next/image'
 import Web3Modal from "web3modal";
 import styles from '../styles/Home.module.css'
 import { ConnectButton } from '@rainbow-me/rainbowkit';
 import { useContract, useProvider,useSigner,useAccount,useBalance,useConnect  } from 'wagmi'
 import {MemeForestAddress} from '../constant'
 import { useEffect, useRef, useState, useContext } from "react";
-import { MainContext } from '../context';
-import { ethers,providers, Contract } from "ethers";
 import MEME from '../artifacts/contracts/MemeForest.sol/MemeForest.json'
 import 'bootstrap/dist/css/bootstrap.css'
 import axios from "axios"
-
-
-
-
-export default function Feed () {
-   
+import { useRouter } from 'next/router';
+    
+    
+    
+    
+export default function Starred () {   
+    
     const { data} = useAccount()
     const person = data?.address;
-   
-    const [memes,setMemes] = useState([])
+    const [starredMemes,setStarredMemes] = useState([])
+    const [AMember,setAMember] = useState(false)
     const[loading, setLoading] = useState(false)
+    
     const [Startoggler,setStarToggler] = useState(false)
-    const [Liketoggler,setLikeToggler] = useState(false)
     const provider = useProvider()
     const { data: signer} = useSigner()
-  
     const contractWithSigner = useContract({
         addressOrName: MemeForestAddress,
         contractInterface: MEME.abi,
@@ -37,19 +34,47 @@ export default function Feed () {
         addressOrName: MemeForestAddress,
         contractInterface: MEME.abi,
         signerOrProvider: provider,
-    })
+    });
+    const router = useRouter()
+
+
     useEffect(() => {
-        
-            fetchAllMemes();
-    }, []);
-    const fetchAllMemes = async () => {
+        if(!AMember){
+            checkIfAMember();
+            fetchAllStarredMemes();
+        }
+    }, [AMember]);
+   
+
+    const checkIfAMember = async () => {
         try {
-            const data= await contractWithProvider.fetchAllMemes();
-            const tx = await Promise.all(data.map(async i => {
+            
+            const tx= await contractWithProvider.IsAMember(person)
+            
+            console.log(tx)
+            if(tx) {
+            
+            setAMember(true)
+            }
+            else{
+            setAMember(false)
+            }
+            console.log(AMember)
+        } catch (e) {
+            console.log(e)
+            setAMember(false)
+        }
+    }
+
+
+    const fetchAllStarredMemes = async () => {
+        try {
+            const data= await contractWithProvider.fetchMyStarredMemes(person);
+            const tx = await Promise.all(data.map(async i => { 
+               
                 const Info = await axios.get(i.Memeinfo)
+                console.log("yooooooooooooooooooooooo")
                 const StarAnswer= await contractWithProvider.WhatDidIStar(i.fileId,person);
-                const LikeAnswer= await contractWithProvider.WhatDidILike(i.fileId,person);
-                
                 let List = {
                     
                     Name:Info.data.nameOfFile,
@@ -61,32 +86,33 @@ export default function Feed () {
                     NumberOfLikes:i.Likes.toNumber(),
                     Date:i.DateOfCreation,
                     Description:Info.data.DescriptionOfFile,
-                    DidMemberStarMe: StarAnswer,
-                    DidMemberLikeMe:LikeAnswer
+                    DidMemberStarMe: StarAnswer
+                   
                 }
                 return List
             }));
-            setMemes(tx);
-        } catch (e) {
-            console.log(e)
+            setStarredMemes(tx);
         }
-    }
+        catch (error){
+            console.log(error)
+        }
 
-    const StarMeme = async (id,bool) =>{
+    }
+    const StarMeme = async (id) =>{
         try {
             console.log(Startoggler)
-            if (bool == true) {
+            if (Startoggler) {
                 // unstarring
                 const data= await contractWithSigner.RemoveStarMeme(id)
                 await data.wait()
-                await fetchAllMemes();
-                // setStarToggler(false)
+                await fetchAllStarredMemes();
+                setStarToggler(false)
             }
             else {
                 const data= await contractWithSigner.StarMeme(id)
                 await data.wait()
-                await fetchAllMemes();
-                // setStarToggler(true)
+                await fetchAllStarredMemes();
+                setStarToggler(true)
             }
             
 
@@ -94,6 +120,7 @@ export default function Feed () {
             console.log(e)
         }
     }
+
     const download = (e,name) => {
         
         axios({
@@ -111,39 +138,56 @@ export default function Feed () {
           });
          
       };
-    const LikeMeme = async (id,bool) =>{
-        try {
-            if (bool == true) {
-                // unliking
-                const data= await contractWithSigner.UnLikeMeme(id)
-                await data.wait()
-                await fetchAllMemes(); 
-            //    setLikeToggler(false)
-            }
-            else {
-                const data= await contractWithSigner.LikeMeme(id)
-                await data.wait()
-                await fetchAllMemes();
-                // setLikeToggler(true)
-            }
-            
 
-        } catch (e) {
-            console.log(e)
-        }
+      const gohome = () => {
+        router.push('/')
+    }
+    const create = () => {
+        router.push('/create')
     }
 
-    const renderButton = () => {
-        
-        if (memes.length >0){
+      const renderButton = () => {
+        if(!AMember){
+            return (
+                <div style={{ padding:"20px", textAlign:"center",margin:"5px 0 5px 0" }}> 
+                    <div style={{fontSize:"18px"}}>
+                        Go Back Home and Register before Seeing Starred Memes 
+                    </div>
+                    <button onClick={gohome} style={{padding:"10px 15px", marginLeft:"10px",color:"black",marginTop:"10px",
+                    backgroundColor:"greenyellow",fontSize:"14px",borderRadius:"10px"}}> 
+                        Home
+                    </button>
+                </div>
+            )
+        }
+        if(AMember) {
+           if(starredMemes.length == 0) 
+           {
+            return (
+                <div style={{ padding:"20px", textAlign:"center",margin:"5px 0 5px 0" }}> 
+                    <div style={{fontSize:"18px"}}>
+                        You have No Starred Memes Go back to Create Memes 
+                    </div>
+                    <button onClick={create} style={{padding:"10px 15px", marginLeft:"10px",color:"black",marginTop:"10px",
+                    backgroundColor:"greenyellow",fontSize:"14px",borderRadius:"10px", border:"none"}}> 
+                        Create Meme
+                    </button>
+                </div>
+            )
+           }
+           if(starredMemes.length > 0){
             return(
+                <div >
+                <h3 style={{textAlign:"center"}}>
+                    YOUR STARRED MEMES
+                </h3>
+              
                 <div className='row d-flex' style={{flexDirection:"row"}}>
                     {
-                        memes.map((card,i) => {
+                        starredMemes.map((card,i) => {
                             return(  
                                 <div key={i} className='col-md-3 p-3'>   
                                     {
-
                                         (!card.Name == " " && !card.Description == " ") &&
 
                                             <div className={styles.Memebox} style={{borderRadius:"25px", height:"auto",padding:"10px"}}>
@@ -168,10 +212,10 @@ export default function Feed () {
                                                     <div style={{borderRadius:"10px",width:"190px",height:"auto",marginTop:"13px",fontSize:"14px"}}>
                                                         {card.Description} 
                                                     </div>
-                                                    <div className='d-flex justify-content-between ' >
+                                                    <div className='' >
                                                     
-                                                         <button className={styles.ToggleButton} onClick={() => StarMeme(card.Id, card.DidMemberStarMe)}
-                                                         style={{borderRadius:"5px",border:"1px black solid",width:"90px",height:"30px",marginTop:"13px",display:"flex",alignItems:"center", justifyContent:"space-around"}}>
+                                                         <button className={styles.ToggleButton} onClick={() => StarMeme(card.Id)}
+                                                         style={{borderRadius:"5px",border:"1px black solid",width:"100%",height:"30px",marginTop:"13px",display:"flex",alignItems:"center", justifyContent:"space-around"}}>
                                                             { 
                                                             // This was complicated for me when getting the logic lol
                                                             // so whatrs happening here is we wanna know 3 things: 
@@ -188,7 +232,6 @@ export default function Feed () {
                                                             */
                                                              (card.DidMemberStarMe == true) ?
                                                                 (
-                                                                   
                                                                     <>
                                                                     <img src='./filledStar.png' alt='STAR'  style={{width:"20px",height:"20px"}}  />
                                                                     {card.NumberOfStars}
@@ -196,71 +239,30 @@ export default function Feed () {
                                                                 ) 
                                                                 :
                                                                 (
-                                                                    // <>
-                                                                    // {
-                                                                    //     Startoggler ? 
-                                                                    //     (
-                                                                    //         <>
-                                                                    //         <img src='./filledStar.png' alt='STAR'  style={{width:"20px",height:"20px"}}  />
-                                                                    //         {card.NumberOfStars}
-                                                                    //         </>
-                                                                    //     ) 
-                                                                    //     : 
-                                                                    //     (
-                                                                    //         <>
-                                                                    //         <img src='./strokeStar.png' alt='STAR' style={{width:"20px",height:"20px"}}  />
-                                                                    //         {card.NumberOfStars}
-                                                                    //         </>
-                                                                    //     )
-                                                                    // }
-                                                                    // </>
                                                                     <>
+                                                                    {
+                                                                        Startoggler ? 
+                                                                        (
+                                                                            <>
+                                                                            <img src='./filledStar.png' alt='STAR'  style={{width:"20px",height:"20px"}}  />
+                                                                            {card.NumberOfStars}
+                                                                            </>
+                                                                        ) 
+                                                                        : 
+                                                                        (
+                                                                            <>
                                                                             <img src='./strokeStar.png' alt='STAR' style={{width:"20px",height:"20px"}}  />
-                                                                           {card.NumberOfStars}
-                                                                           </>
+                                                                            {card.NumberOfStars}
+                                                                            </>
+                                                                        )
+                                                                    }
+                                                                    </>
                                                                 )
                                                             }
                                                             
                                                          </button>
                                                        
-                                                        <button className={styles.ToggleButton2}  onClick={() => LikeMeme(card.Id, card.DidMemberLikeMe)}
-                                                            style={{borderRadius:"5px",border:"1px black solid",width:"90px",height:"30px",marginTop:"13px",display:"flex",alignItems:"center", justifyContent:"space-around"}}>
-                                                                {
-                                                                    (card.DidMemberLikeMe == true) ?
-                                                                    (
-                                                                        <>
-                                                                        <img src='./filledLove.png' alt='STAR'  style={{width:"20px",height:"20px"}}  />
-                                                                        {card.NumberOfLikes}
-                                                                        </>
-                                                                    ) 
-                                                                    :
-                                                                    (
-                                                                        // <>
-                                                                        // {
-                                                                        //     Liketoggler ? 
-                                                                        //     (
-                                                                        //         <>
-                                                                        //         <img src='./filledLove.png' alt='STAR'  style={{width:"20px",height:"20px"}}  />
-                                                                        //         {card.NumberOfLikes}
-                                                                        //         </>
-                                                                        //     ) 
-                                                                        //     : 
-                                                                        //     (
-                                                                        //         <>
-                                                                        //         <img src='./UnfilledLove.png' alt='STAR' style={{width:"20px",height:"20px"}}  />
-                                                                        //         {card.NumberOfLikes}
-                                                                        //         </>
-                                                                        //     )
-                                                                        // }
-                                                                        // </>
-                                                                        <>
-                                                                                <img src='./UnfilledLove.png' alt='STAR' style={{width:"20px",height:"20px"}}  />
-                                                                                {card.NumberOfLikes}
-                                                                                </>
-                                                                    )
-                                                                }
-                                                                    
-                                                        </button>
+                                                        
                                                     </div>
                                                     
                                                 </div>
@@ -272,17 +274,14 @@ export default function Feed () {
                         })
                     }
                 </div>
-            ) 
+                </div>
+            )
+           }
         }
 
-        if(memes.length == 0) {
-            return (
-                <h4>
-                    There are no Memes For Display
-                </h4>
-            )
-        }
-    }
+      }
+
+
 
     return (
         <div className={styles.container}>
@@ -308,5 +307,5 @@ export default function Feed () {
     
           
         </div>
-      )
+    )
 }
