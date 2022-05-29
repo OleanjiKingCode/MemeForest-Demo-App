@@ -95,9 +95,14 @@
 .change:hover{
   transform: scale(1.5);
 }
-
+.ToggleButtonLoading{
+  background-color: rgb(255, 255, 0);
+}
 .ToggleButton:hover {
   background-color: rgb(255, 255, 0);
+}
+.ToggleButton2Loading{
+  background-color: rgb(211, 1, 1); 
 }
 .ToggleButton2:hover {
   background-color: rgb(211, 1, 1); 

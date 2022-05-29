@@ -120,6 +120,7 @@ export default function Starred () {
     
     const StarMeme = async (id,bool) =>{
         try {
+            setLoading(true)
             console.log(Startoggler)
             if (bool == true) {
                 // unstarring
@@ -135,7 +136,7 @@ export default function Starred () {
                 // setStarToggler(true)
             }
             
-
+            setLoading(false)
         } catch (e) {
             console.log(e)
         }
@@ -233,8 +234,19 @@ export default function Starred () {
                                                         {card.Description} 
                                                     </div>
                                                     <div className='' >
-                                                    
-                                                         <button className={styles.ToggleButton} onClick={() => StarMeme(card.Id, card.DidMemberStarMe)}
+                                                    {
+                                                        loading ?
+                                                        (
+                                                            <button className={styles.ToggleButtonLoading} 
+                                                         style={{borderRadius:"5px",border:"1px black solid",width:"100%",height:"30px",marginTop:"13px",display:"flex",alignItems:"center", justifyContent:"space-around"}}>
+                                                            <h4>
+                                                                . . . 
+                                                            </h4>
+                                                            </button>
+                                                        )
+                                                        :
+                                                        (
+                                                            <button className={styles.ToggleButton} onClick={() => StarMeme(card.Id, card.DidMemberStarMe)}
                                                          style={{borderRadius:"5px",border:"1px black solid",width:"100%",height:"30px",marginTop:"13px",display:"flex",alignItems:"center", justifyContent:"space-around"}}>
                                                             { 
                                                             // This was complicated for me when getting the logic lol
@@ -269,6 +281,9 @@ export default function Starred () {
                                                             
                                                          </button>
                                                        
+                                                        )
+                                                    }
+                                                         
                                                         
                                                     </div>
                                                     

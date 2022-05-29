@@ -270,6 +270,7 @@ contract MemeForest is ReentrancyGuard{
             if(sender == IdMembers[i+1].MemeberAddress){
                  uint val = IdMembers[i+1].MyId;
                 currentNum = IdMembers[val].MyMemes;
+                 console.log(val);
                  
             }
         }
@@ -282,10 +283,10 @@ contract MemeForest is ReentrancyGuard{
         MemeFiles[] memory memes = new MemeFiles[] (currentNum);
          for (uint i = 0; i < currentMemeNum; i++) {
              uint id = IdMemeFiles[i+1].fileId;
-             if( IdMemeFiles[id].Owner == sender ){
+             if(sender ==  IdMemeFiles[id].Owner  ){
                  
             MemeFiles storage memeFiles = IdMemeFiles[id];
-              console.log(sender);
+             
             memes[currentIndex] = memeFiles;
             currentIndex+=1;
              }

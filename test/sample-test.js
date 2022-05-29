@@ -26,6 +26,7 @@ describe("Greeter", function () {
     console.log(today)
     const [_, buyerAddress,thirdone] = await ethers.getSigners()
     const createMember = await meme.connect(buyerAddress).CreateMembers("first kid", today);
+    const createMember2 = await meme.connect(thirdone).CreateMembers("second kid", today);
     const fetchMembers= await meme.connect(buyerAddress).fetchMembers();
     console.log(fetchMembers);
     const addr =  await buyerAddress.getAddress()

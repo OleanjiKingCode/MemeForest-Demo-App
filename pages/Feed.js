@@ -172,21 +172,23 @@ export default function Feed () {
                                                     </div>
                                                     <div className='d-flex justify-content-between ' >
                                                     
-                                                         <button className={styles.ToggleButton} onClick={() => StarMeme(card.Id, card.DidMemberStarMe)}
-                                                         style={{borderRadius:"5px",border:"1px black solid",width:"90px",height:"30px",marginTop:"13px",display:"flex",alignItems:"center", justifyContent:"space-around"}}>
+                                                        
                                                             {
                                                                 loadingStar ? 
                                                                 (
+                                                                    <button className={styles.ToggleButtonLoading} 
+                                                                    style={{borderRadius:"5px",border:"1px black solid",width:"90px",height:"30px",marginTop:"13px",display:"flex",alignItems:"center", justifyContent:"space-around"}}>
                                                                 <h4>
                                                                     . . .
                                                                 </h4>
-
+                                                                    </button>
                                                                 ) 
                                                                 : 
                                                                 (
                                                                     
-                                                                   <>
                                                                    
+                                                                    <button className={styles.ToggleButton} onClick={() => StarMeme(card.Id, card.DidMemberStarMe)}
+                                                                    style={{borderRadius:"5px",border:"1px black solid",width:"90px",height:"30px",marginTop:"13px",display:"flex",alignItems:"center", justifyContent:"space-around"}}>
                                                                    {
                                                                    // This was complicated for me when getting the logic lol
                                                                         // so whatrs happening here is we wanna know 3 things: 
@@ -220,26 +222,30 @@ export default function Feed () {
                                                                                )
                                                                         
                                                                    }
-                                                                   </>
+                                                                    </button>
                                                                    
                                                                 )
                                                             }
                                                             
                                                             
-                                                         </button>
                                                        
-                                                        <button className={styles.ToggleButton2}  onClick={() => LikeMeme(card.Id, card.DidMemberLikeMe)}
-                                                            style={{borderRadius:"5px",border:"1px black solid",width:"90px",height:"30px",marginTop:"13px",display:"flex",alignItems:"center", justifyContent:"space-around"}}>
+                                                       
+                                                       
                                                                 {
                                                                     loadingLike?
                                                                     (
+                                                                        
+                                                                        <button className={styles.ToggleButton2Loading}  
+                                                                        style={{borderRadius:"5px",border:"1px black solid",width:"90px",height:"30px",marginTop:"13px",display:"flex",alignItems:"center", justifyContent:"space-around"}}>
                                                                         <h4>
                                                                             . . . 
                                                                         </h4>
+                                                                        </button>
                                                                     ) 
                                                                     :
                                                                     (
-                                                                        <>
+                                                                        <button className={styles.ToggleButton2}  onClick={() => LikeMeme(card.Id, card.DidMemberLikeMe)}
+                                                                        style={{borderRadius:"5px",border:"1px black solid",width:"90px",height:"30px",marginTop:"13px",display:"flex",alignItems:"center", justifyContent:"space-around"}}>
                                                                             {
                                                                                 (card.DidMemberLikeMe == true) ?
                                                                                 (
@@ -257,14 +263,14 @@ export default function Feed () {
                                                                                             </>
                                                                                 )
                                                                             }
-                                                                        </>
+                                                                         </button>
                                                                     )
                                                                 }
                                                                 
                                                                 
                                                                 
                                                                     
-                                                        </button>
+                                                       
                                                     </div>
                                                     
                                                 </div>
