@@ -16,6 +16,7 @@ contract MemeForest is ReentrancyGuard{
         address MemeberAddress;
         uint MyId;
         uint MyMemes;
+        uint MyStarredMemes;
         uint MyDeletedMemes;
         string Datejoined;
     }
@@ -53,6 +54,7 @@ contract MemeForest is ReentrancyGuard{
             _name,
             msg.sender,
             currentMemberId,
+            0,
             0,
             0,
             _date
@@ -181,7 +183,7 @@ contract MemeForest is ReentrancyGuard{
 
     function StarMeme(uint _id ) public {
         uint currentMemeNum = NumOfAllMemes.current();
-        
+        uint currentMemberNum = NumOfAllMembers.current();
         for(uint i = 0; i < currentMemeNum; i++){
             if(_id == IdMemeFiles[i+1].fileId) {
                 IdMemeFiles[_id].starred = true;
@@ -189,15 +191,22 @@ contract MemeForest is ReentrancyGuard{
 
                 DidyouStar[msg.sender][_id]= true;
                
+                
+               
             }
         }
-
+        for (uint index = 0; index < currentMemberNum; index++) {
+            if(msg.sender == IdMembers[index+1].MemeberAddress){
+                uint currentNum = IdMembers[index+1].MyId;
+                IdMembers[currentNum].MyStarredMemes +=1;
+            }
+        }
     }
 
     
     function RemoveStarMeme(uint _id) public {
         uint currentMemeNum = NumOfAllMemes.current();
-        
+          uint currentMemberNum = NumOfAllMembers.current();
         for(uint i = 0; i < currentMemeNum; i++){
             if(_id == IdMemeFiles[i+1].fileId) {
                 IdMemeFiles[_id].starred = true;
@@ -205,6 +214,12 @@ contract MemeForest is ReentrancyGuard{
 
                 DidyouStar[msg.sender][_id]= false;
                
+            }
+        }
+         for (uint index = 0; index < currentMemberNum; index++) {
+            if(msg.sender == IdMembers[index+1].MemeberAddress){
+                uint currentNum = IdMembers[index+1].MyId;
+                IdMembers[currentNum].MyStarredMemes -=1;
             }
         }
 
@@ -217,8 +232,19 @@ contract MemeForest is ReentrancyGuard{
 
     function fetchMyStarredMemes(address sender) public view returns (MemeFiles[] memory) {
         uint currentMemeNum = NumOfAllMemes.current();
+
+    uint currentMemberNum = NumOfAllMembers.current();
+        uint currentNum;
+        for (uint i = 0; i < currentMemberNum; i++) {
+            if(sender == IdMembers[i+1].MemeberAddress){
+                currentNum = IdMembers[i+1].MyStarredMemes;
+                 
+            }
+        }
+
+
         uint currentIndex = currentMemeNum;
-        MemeFiles[] memory memes = new MemeFiles[] (currentMemeNum);
+        MemeFiles[] memory memes = new MemeFiles[] (currentNum);
         for (uint i = 0; i < currentMemeNum; i++) {
             uint id = IdMemeFiles[i+1].fileId;
             address person = sender;
@@ -235,8 +261,16 @@ contract MemeForest is ReentrancyGuard{
     function fetchMyMeme(address sender) public view returns (MemeFiles[] memory) {
         address Sender = sender;
         uint currentMemeNum = NumOfAllMemes.current();
+         uint currentMemberNum = NumOfAllMembers.current();
+        uint currentNum;
+        for (uint i = 0; i < currentMemberNum; i++) {
+            if(sender == IdMembers[i+1].MemeberAddress){
+                currentNum = IdMembers[i+1].MyMemes;
+                 
+            }
+        }
         uint currentIndex = currentMemeNum;
-        MemeFiles[] memory memes = new MemeFiles[] (currentMemeNum);
+        MemeFiles[] memory memes = new MemeFiles[] (currentNum);
          for (uint i = 0; i < currentMemeNum; i++) {
              uint id = IdMemeFiles[i+1].fileId;
              if( IdMemeFiles[id].Owner == Sender ){

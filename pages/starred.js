@@ -71,14 +71,23 @@ export default function Starred () {
     }
 
     const fetchAllStarredMemes = async () => {
-       
+        try {
             const data= await contractWithProvider.fetchMyStarredMemes(person);
+            console.log(data)
             const tx = await Promise.all(data.map(async i => {
-                const Info = await axios.get('http://arweave.net/uwMLTswvNAFvEYFCNYcm5bsOva7DN75kDme8SBM6wdU')
+              
+                let url = i.Memeinfo
+                
                 console.log(i.Memeinfo)
+                
                 const StarAnswer= await contractWithProvider.WhatDidIStar(i.fileId,person);
                 const LikeAnswer= await contractWithProvider.WhatDidILike(i.fileId,person);
+               
+
+               
+               const Info = await axios.get(url)
                 
+               
                 let List = {
                     
                     Name:Info.data.nameOfFile,
@@ -94,8 +103,15 @@ export default function Starred () {
                     DidMemberLikeMe:LikeAnswer
                 }
                 return List
+            
             }));
+            
             setStarredMemes(tx);
+        } catch (error) {
+            console.log(error)
+        }
+       
+            
         
     }
 
@@ -107,13 +123,13 @@ export default function Starred () {
                 // unstarring
                 const data= await contractWithSigner.RemoveStarMeme(id)
                 await data.wait()
-                await fetchAllMemes();
+                await fetchAllStarredMemes();
                 // setStarToggler(false)
             }
             else {
                 const data= await contractWithSigner.StarMeme(id)
                 await data.wait()
-                await fetchAllMemes();
+                await fetchAllStarredMemes();
                 // setStarToggler(true)
             }
             
