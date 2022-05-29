@@ -117,8 +117,8 @@ export default function Home() {
           Memes : i.MyMemes.toNumber(),
           Starred :i.MyStarredMemes.toNumber()
          
-         }
-         return list
+        }
+        return list
        }));
        setMemberDetails(tx)
      } catch (w) {

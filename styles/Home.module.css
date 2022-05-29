@@ -89,11 +89,20 @@
   justify-content: center;
   align-items: center;
 }
+.upperimg{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.upperimg:hover .change {
+  transform: scale(1.5);
+}
 .change, .ToggleButton{
   transition: all .3s ease;
 }
-.change:hover{
-  transform: scale(1.5);
+
+.upperimg:hover .nameOfOwner,.upperimg:hover .dateOfMeme{
+  display: unset;
 }
 .ToggleButtonLoading{
   background-color: rgb(255, 255, 0);
@@ -106,6 +115,36 @@
 }
 .ToggleButton2:hover {
   background-color: rgb(211, 1, 1); 
+}
+.nameOfOwner{
+  padding: 1px 25px;
+  background-color: rgba(128, 128, 128, 0.418);
+  color: rgba(255, 255, 255, 0.527);
+  position: absolute;
+  border-radius: 10px;
+  position: absolute;
+  transform: translateY(62px);
+  align-self: flex-start;
+  justify-self: end;
+  border: 1px solid black;
+  display: none;
+  transition: all .4s ease;
+  overflow: hidden;
+}
+.dateOfMeme{
+  padding: 1px 25px;
+  font-size: 11px;
+  border-radius: 10px;
+  background-color: rgba(32, 32, 32, 0.747);
+  color: white;
+  position: absolute;
+  align-self: flex-end;
+  justify-self: start;
+  transform: translateY(-62px);
+  border: 1px solid black;
+  display: none;
+  transition: all .4s ease;
+  overflow: hidden;
 }
 .footer {
   display: flex;

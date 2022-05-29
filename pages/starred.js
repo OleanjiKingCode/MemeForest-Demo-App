@@ -20,7 +20,7 @@ export default function Starred () {
     const [starredMemes,setStarredMemes] = useState([])
     const [AMember,setAMember] = useState(false)
     const[loading, setLoading] = useState(false)
-    
+    const[memberDetails,setMemberDetails] = useState([])
     const [Startoggler,setStarToggler] = useState(false)
     const provider = useProvider()
     const { data: signer} = useSigner()
@@ -72,15 +72,14 @@ export default function Starred () {
 
     const fetchAllStarredMemes = async () => {
         try {
-            console.log("data")
-            const data= await contractWithProvider.fetchMyStarredMemes(person);
             
-            console.log(data)
+            const data= await contractWithProvider.fetchMyStarredMemes(person);
+           
             const tx = await Promise.all(data.map(async i => {
               
                 let url = i.Memeinfo
                 
-                console.log(i.Memeinfo)
+               
                 
                 const StarAnswer= await contractWithProvider.WhatDidIStar(i.fileId,person);
                 const LikeAnswer= await contractWithProvider.WhatDidILike(i.fileId,person);
@@ -107,8 +106,21 @@ export default function Starred () {
                 return List
             
             }));
-            
             setStarredMemes(tx);
+            const ata= await contractWithProvider.fetchMembers();
+    
+            const txn = await Promise.all(ata.map(async i =>{
+               let list = {
+                Name : i.Name,
+                Address : i.MemeberAddress,
+                Date: i.Datejoined,
+                Memes : i.MyMemes.toNumber(),
+                Starred :i.MyStarredMemes.toNumber()
+               
+              }
+              return list
+             }));
+             setMemberDetails(txn)
         } catch (error) {
             console.log(error)
         }
@@ -212,10 +224,35 @@ export default function Starred () {
                                         (!card.Name == " " && !card.Description == " " && card.NumberOfStars >= 1) &&
 
                                             <div className={styles.Memebox} style={{borderRadius:"25px", height:"auto",padding:"10px"}}>
-                                                <div className='d-flex align-items-center justify-content-center'  style={{borderRadius:"15px",height:"150px",overflow:"hidden"/*, backgroundImage:`url(${card.File})`, backgroundSize:"cover",backgroundPosition:"center"*/}}>
+                                                <div className={styles.upperimg}  style={{borderRadius:"15px",height:"150px",overflow:"hidden" ,flexDirection:"column"}}>
                                                 <a href={card.File} target='_blank' style={{padding:"0", margin:"0", textDecoration:"none", }}>  
                                                     <img src={card.File} className={styles.change} alt="..." style={{height:"150px",width:"auto",}}/>
                                                 </a>
+                                                <div className={styles.nameOfOwner} >
+                                                        {
+                                                            memberDetails.map((lists,i) => {
+                                                                
+                                                                return(
+                                                                    
+                                                                    <div key={i}  style={{fontSize:"14px",fontWeight:"500"}}>
+                                                                    {
+                                                                        lists.Address == card.AddressOfOwner &&
+                                                                        <div>
+                                                                            {lists.Name}
+                                                                        </div>
+                                                                    }
+                                                                    </div>
+                                                                )
+                                                            })
+                                                        
+                                                        }
+                                                    </div>
+                                                    <div className={styles.dateOfMeme} >
+                                                        {
+                                                            card.Date
+                                                        
+                                                        }
+                                                    </div>
                                                </div>
                                                 <div className='py-2 px-3' style={{borderRadius:"25px",border:"1px black solid",height:"auto",marginTop:"10px"}}>
                                                     <div className='d-flex justify-content-between ' >

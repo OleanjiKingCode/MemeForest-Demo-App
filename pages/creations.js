@@ -1,32 +1,29 @@
 import Head from 'next/head'
-import Image from 'next/image'
 import Web3Modal from "web3modal";
 import styles from '../styles/Home.module.css'
 import { ConnectButton } from '@rainbow-me/rainbowkit';
 import { useContract, useProvider,useSigner,useAccount,useBalance,useConnect  } from 'wagmi'
 import {MemeForestAddress} from '../constant'
 import { useEffect, useRef, useState, useContext } from "react";
-import { MainContext } from '../context';
-import { ethers,providers, Contract } from "ethers";
 import MEME from '../artifacts/contracts/MemeForest.sol/MemeForest.json'
 import 'bootstrap/dist/css/bootstrap.css'
 import axios from "axios"
+import { useRouter } from 'next/router';
 
 
+export default function Creations () { 
 
-
-export default function Feed () {
-   
     const { data} = useAccount()
     const person = data?.address;
-   
-    const [memes,setMemes] = useState([])
+    const [AMember,setAMember] = useState(false)
     const[loadingStar, setLoadingStar] = useState(false)
     const[memberDetails,setMemberDetails] = useState([])
     const[loadingLike, setLoadingLike] = useState(false)
+    const [Startoggler,setStarToggler] = useState(false)
     const provider = useProvider()
     const { data: signer} = useSigner()
-  
+    const [myMemes,setMyMemes] = useState([])
+
     const contractWithSigner = useContract({
         addressOrName: MemeForestAddress,
         contractInterface: MEME.abi,
@@ -37,55 +34,101 @@ export default function Feed () {
         addressOrName: MemeForestAddress,
         contractInterface: MEME.abi,
         signerOrProvider: provider,
-    })
+    });
+    const router = useRouter()
+
     useEffect(() => {
         
-            fetchAllMemes();
-    }, []);
-    const fetchAllMemes = async () => {
-        try {
-            const data= await contractWithProvider.fetchAllMemes();
-            const tx = await Promise.all(data.map(async i => {
-                const Info = await axios.get(i.Memeinfo)
-                const StarAnswer= await contractWithProvider.WhatDidIStar(i.fileId,person);
-                const LikeAnswer= await contractWithProvider.WhatDidILike(i.fileId,person);
-                
-                let List = {
-                    
-                    Name:Info.data.nameOfFile,
-                    AddressOfOwner : i.Owner,
-                    Id :i.fileId.toNumber(),
-                    File: Info.data.image,
-                    IsStarred:i.starred,
-                    NumberOfStars:i.Stars.toNumber(),
-                    NumberOfLikes:i.Likes.toNumber(),
-                    Date:i.DateOfCreation,
-                    Description:Info.data.DescriptionOfFile,
-                    DidMemberStarMe: StarAnswer,
-                    DidMemberLikeMe:LikeAnswer
-                }
-                return List
-            }));
-            setMemes(tx);
-            const ata= await contractWithProvider.fetchMembers();
-    
-            const txn = await Promise.all(ata.map(async i =>{
-               let list = {
-                Name : i.Name,
-                Address : i.MemeberAddress,
-                Date: i.Datejoined,
-                Memes : i.MyMemes.toNumber(),
-                Starred :i.MyStarredMemes.toNumber()
-               
-              }
-              return list
-             }));
-             setMemberDetails(txn)
-        } catch (e) {
-            console.log(e)
-        }
-    }
+        fetchMyMemes();
+}, []);
 
+    useEffect(() => {
+       
+        if(!AMember){
+            checkIfAMember();
+            
+        }
+    }, [AMember]);
+
+
+const checkIfAMember = async () => {
+    try {
+        
+        const tx= await contractWithProvider.IsAMember(person)
+        
+        console.log(tx)
+        if(tx) {
+        
+        setAMember(true)
+        }
+        else{
+        setAMember(false)
+        }
+        console.log(AMember)
+    } catch (e) {
+        console.log(e)
+        setAMember(false)
+    }
+}
+
+const fetchMyMemes = async () => {
+    try {
+        
+        const data= await contractWithProvider.fetchMyMeme(person);
+        
+       
+        const tx = await Promise.all(data.map(async i => {
+          
+            let url = i.Memeinfo
+           
+            
+            const StarAnswer= await contractWithProvider.WhatDidIStar(i.fileId,person);
+            const LikeAnswer= await contractWithProvider.WhatDidILike(i.fileId,person);
+           
+
+           
+           const Info = await axios.get(url)
+            
+           
+            let List = {
+                
+                Name:Info.data.nameOfFile,
+                AddressOfOwner : i.Owner,
+                Id :i.fileId.toNumber(),
+                File: Info.data.image,
+                IsStarred:i.starred,
+                NumberOfStars:i.Stars.toNumber(),
+                NumberOfLikes:i.Likes.toNumber(),
+                Date:i.DateOfCreation,
+                Description:Info.data.DescriptionOfFile,
+                DidMemberStarMe: StarAnswer,
+                DidMemberLikeMe:LikeAnswer
+            }
+            return List
+        
+        }));
+        setMyMemes(tx);
+        const ata= await contractWithProvider.fetchMembers();
+
+        const txn = await Promise.all(ata.map(async i =>{
+           let list = {
+            Name : i.Name,
+            Address : i.MemeberAddress,
+            Date: i.Datejoined,
+            Memes : i.MyMemes.toNumber(),
+            Starred :i.MyStarredMemes.toNumber()
+           
+          }
+          return list
+         }));
+         setMemberDetails(txn)
+    } catch (error) {
+        console.log(error)
+    }
+   
+        
+    
+    }
     const StarMeme = async (id,bool) =>{
         try {
             setLoadingStar(true)
@@ -147,27 +190,67 @@ export default function Feed () {
         } catch (e) {
             console.log(e)
         }
+    } 
+    const gohome = () => {
+        router.push('/')
+    }
+    const create = () => {
+        router.push('/create')
     }
 
+
+
+
     const renderButton = () => {
-        
-        if (memes.length >0){
+        if(!AMember){
+            return (
+                <div style={{ padding:"20px", textAlign:"center",margin:"5px 0 5px 0" }}> 
+                    <div style={{fontSize:"18px"}}>
+                        Go Back Home and Register before Seeing Your Memes 
+                    </div>
+                    <button onClick={gohome} style={{padding:"10px 15px", marginLeft:"10px",color:"black",marginTop:"10px",
+                    backgroundColor:"greenyellow",fontSize:"14px",borderRadius:"10px"}}> 
+                        Home
+                    </button>
+                </div>
+            )
+        }
+        if(AMember) {
+           if(myMemes.length == 0) 
+           {
+            return (
+                <div style={{ padding:"20px", textAlign:"center",margin:"5px 0 5px 0" }}> 
+                    <div style={{fontSize:"18px"}}>
+                        You have No Memes Go back to Create Memes 
+                    </div>
+                    <button onClick={create} style={{padding:"10px 15px", marginLeft:"10px",color:"black",marginTop:"10px",
+                    backgroundColor:"greenyellow",fontSize:"14px",borderRadius:"10px", border:"none"}}> 
+                        Create Meme
+                    </button>
+                </div>
+            )
+           }
+           if(myMemes.length > 0){
             return(
+                <div >
+                <h3 style={{textAlign:"center"}}>
+                    YOUR MEMES
+                </h3>
+              
                 <div className='row d-flex' style={{flexDirection:"row"}}>
                     {
-                        memes.map((card,i) => {
+                        myMemes.map((card,i) => {
                             return(  
                                 <div key={i} className='col-md-3 p-3'>   
                                     {
-
-                                        (!card.Name == " " && !card.Description == " ") &&
+                                        (!card.Name == " " && !card.Description == " " ) &&
 
                                             <div className={styles.Memebox} style={{borderRadius:"25px", height:"auto",padding:"10px"}}>
-                                                <div className={styles.upperimg}  style={{borderRadius:"15px",height:"150px",overflow:"hidden", flexDirection:"column"/*, backgroundImage:`url(${card.File})`, backgroundSize:"cover",backgroundPosition:"center"*/}}>
-                                                    <a href={card.File} target='_blank' style={{padding:"0", margin:"0", textDecoration:"none", }}>  
-                                                        <img src={card.File} className={styles.change} alt="..." style={{height:"150px",width:"auto",}}/>
-                                                    </a>
-                                                    <div className={styles.nameOfOwner} >
+                                                <div className={styles.upperimg}  style={{borderRadius:"15px",height:"150px",overflow:"hidden" ,flexDirection:"column"}}>
+                                                <a href={card.File} target='_blank' style={{padding:"0", margin:"0", textDecoration:"none", }}>  
+                                                    <img src={card.File} className={styles.change} alt="..." style={{height:"150px",width:"auto",}}/>
+                                                </a>
+                                                <div className={styles.nameOfOwner} >
                                                         {
                                                             memberDetails.map((lists,i) => {
                                                                 
@@ -321,19 +404,13 @@ export default function Feed () {
                         })
                     }
                 </div>
-            ) 
-        }
-
-        if(memes.length == 0) {
-            return (
-                <h4 style={{textAlign:"center"}}>
-                    There are no Memes For Display
-                </h4>
+                </div>
             )
+           }
         }
-    }
 
-    return (
+      }
+      return (
         <div className={styles.container}>
           <Head>
             <title>Home</title>
@@ -357,5 +434,8 @@ export default function Feed () {
     
           
         </div>
-      )
+    )
+
+
+
 }
