@@ -241,14 +241,14 @@ export default function Create () {
                                 </button>
                             )
                         }
-                        {
+                        {/* {
                             fileURL && 
                             <> {console.log(nameLink+ " " + descriptionLink + " "+ fileURL)}
                             <a href={nameLink} target='_blank' > {nameLink} </a> <br/>
                             <a href={descriptionLink} target='_blank' > {descriptionLink} </a><br/>
                             <a href={fileURL} target='_blank' > {fileURL}</a>
                             </>
-                        }
+                        } */}
                     </div>
                     </div>
                     

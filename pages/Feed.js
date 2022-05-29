@@ -21,9 +21,9 @@ export default function Feed () {
     const person = data?.address;
    
     const [memes,setMemes] = useState([])
-    const[loading, setLoading] = useState(false)
-    const [Startoggler,setStarToggler] = useState(false)
-    const [Liketoggler,setLikeToggler] = useState(false)
+    const[loadingStar, setLoadingStar] = useState(false)
+   
+    const[loadingLike, setLoadingLike] = useState(false)
     const provider = useProvider()
     const { data: signer} = useSigner()
   
@@ -74,7 +74,8 @@ export default function Feed () {
 
     const StarMeme = async (id,bool) =>{
         try {
-            console.log(Startoggler)
+            setLoadingStar(true)
+          
             if (bool == true) {
                 // unstarring
                 const data= await contractWithSigner.RemoveStarMeme(id)
@@ -88,7 +89,7 @@ export default function Feed () {
                 await fetchAllMemes();
                 // setStarToggler(true)
             }
-            
+            setLoadingStar(false)
 
         } catch (e) {
             console.log(e)
@@ -113,6 +114,7 @@ export default function Feed () {
       };
     const LikeMeme = async (id,bool) =>{
         try {
+            setLoadingLike(true)
             if (bool == true) {
                 // unliking
                 const data= await contractWithSigner.UnLikeMeme(id)
@@ -126,7 +128,7 @@ export default function Feed () {
                 await fetchAllMemes();
                 // setLikeToggler(true)
             }
-            
+            setLoadingLike(false)
 
         } catch (e) {
             console.log(e)
@@ -172,93 +174,95 @@ export default function Feed () {
                                                     
                                                          <button className={styles.ToggleButton} onClick={() => StarMeme(card.Id, card.DidMemberStarMe)}
                                                          style={{borderRadius:"5px",border:"1px black solid",width:"90px",height:"30px",marginTop:"13px",display:"flex",alignItems:"center", justifyContent:"space-around"}}>
-                                                            { 
-                                                            // This was complicated for me when getting the logic lol
-                                                            // so whatrs happening here is we wanna know 3 things: 
-                                                            // Did I star this Meme?
-                                                            // What Did I Star?
-                                                            // Who starred this Meme?
-                                                            // so i asnwer these questions by checking if the cuurent user has starred this meme
-                                                            /*
-                                                                so i check using the id whether this person starred it already them if so show that 
-                                                                it has been starred then if not check if i clicked the button 
-                                                                if i did then show starred star 
-                                                                if i have never starred this item before and i didnt click the button then show empty star
+                                                            {
+                                                                loadingStar ? 
+                                                                (
+                                                                <h4>
+                                                                    . . .
+                                                                </h4>
 
-                                                            */
-                                                             (card.DidMemberStarMe == true) ?
-                                                                (
-                                                                   
-                                                                    <>
-                                                                    <img src='./filledStar.png' alt='STAR'  style={{width:"20px",height:"20px"}}  />
-                                                                    {card.NumberOfStars}
-                                                                    </>
                                                                 ) 
-                                                                :
+                                                                : 
                                                                 (
-                                                                    // <>
-                                                                    // {
-                                                                    //     Startoggler ? 
-                                                                    //     (
-                                                                    //         <>
-                                                                    //         <img src='./filledStar.png' alt='STAR'  style={{width:"20px",height:"20px"}}  />
-                                                                    //         {card.NumberOfStars}
-                                                                    //         </>
-                                                                    //     ) 
-                                                                    //     : 
-                                                                    //     (
-                                                                    //         <>
-                                                                    //         <img src='./strokeStar.png' alt='STAR' style={{width:"20px",height:"20px"}}  />
-                                                                    //         {card.NumberOfStars}
-                                                                    //         </>
-                                                                    //     )
-                                                                    // }
-                                                                    // </>
-                                                                    <>
-                                                                            <img src='./strokeStar.png' alt='STAR' style={{width:"20px",height:"20px"}}  />
-                                                                           {card.NumberOfStars}
-                                                                           </>
+                                                                    
+                                                                   <>
+                                                                   
+                                                                   {
+                                                                   // This was complicated for me when getting the logic lol
+                                                                        // so whatrs happening here is we wanna know 3 things: 
+                                                                        // Did I star this Meme?
+                                                                        // What Did I Star?
+                                                                        // Who starred this Meme?
+                                                                        // so i asnwer these questions by checking if the cuurent user has starred this meme
+                                                                        
+                                                                        //     so i check using the id whether this person starred it already them if so show that 
+                                                                        //     it has been starred then if not check if i clicked the button 
+                                                                        //     if i did then show starred star 
+                                                                        //     if i have never starred this item before and i didnt click the button then show empty star
+
+                                                                        
+
+                                                                            (card.DidMemberStarMe == true) ?
+                                                                               (
+                                                                                  
+                                                                                   <>
+                                                                                   <img src='./filledStar.png' alt='STAR'  style={{width:"20px",height:"20px"}}  />
+                                                                                   {card.NumberOfStars}
+                                                                                   </>
+                                                                               ) 
+                                                                               :
+                                                                               (
+                                                                                   
+                                                                                   <>
+                                                                                   <img src='./strokeStar.png' alt='STAR' style={{width:"20px",height:"20px"}}  />
+                                                                                   {card.NumberOfStars}
+                                                                                   </>
+                                                                               )
+                                                                        
+                                                                   }
+                                                                   </>
+                                                                   
                                                                 )
                                                             }
+                                                            
                                                             
                                                          </button>
                                                        
                                                         <button className={styles.ToggleButton2}  onClick={() => LikeMeme(card.Id, card.DidMemberLikeMe)}
                                                             style={{borderRadius:"5px",border:"1px black solid",width:"90px",height:"30px",marginTop:"13px",display:"flex",alignItems:"center", justifyContent:"space-around"}}>
                                                                 {
-                                                                    (card.DidMemberLikeMe == true) ?
+                                                                    loadingLike?
                                                                     (
-                                                                        <>
-                                                                        <img src='./filledLove.png' alt='STAR'  style={{width:"20px",height:"20px"}}  />
-                                                                        {card.NumberOfLikes}
-                                                                        </>
+                                                                        <h4>
+                                                                            . . . 
+                                                                        </h4>
                                                                     ) 
                                                                     :
                                                                     (
-                                                                        // <>
-                                                                        // {
-                                                                        //     Liketoggler ? 
-                                                                        //     (
-                                                                        //         <>
-                                                                        //         <img src='./filledLove.png' alt='STAR'  style={{width:"20px",height:"20px"}}  />
-                                                                        //         {card.NumberOfLikes}
-                                                                        //         </>
-                                                                        //     ) 
-                                                                        //     : 
-                                                                        //     (
-                                                                        //         <>
-                                                                        //         <img src='./UnfilledLove.png' alt='STAR' style={{width:"20px",height:"20px"}}  />
-                                                                        //         {card.NumberOfLikes}
-                                                                        //         </>
-                                                                        //     )
-                                                                        // }
-                                                                        // </>
                                                                         <>
-                                                                                <img src='./UnfilledLove.png' alt='STAR' style={{width:"20px",height:"20px"}}  />
-                                                                                {card.NumberOfLikes}
-                                                                                </>
+                                                                            {
+                                                                                (card.DidMemberLikeMe == true) ?
+                                                                                (
+                                                                                    <>
+                                                                                    <img src='./filledLove.png' alt='STAR'  style={{width:"20px",height:"20px"}}  />
+                                                                                    {card.NumberOfLikes}
+                                                                                    </>
+                                                                                ) 
+                                                                                :
+                                                                                (
+                                                                                    
+                                                                                    <>
+                                                                                            <img src='./UnfilledLove.png' alt='STAR' style={{width:"20px",height:"20px"}}  />
+                                                                                            {card.NumberOfLikes}
+                                                                                            </>
+                                                                                )
+                                                                            }
+                                                                        </>
                                                                     )
                                                                 }
+                                                                
+                                                                
+                                                                
                                                                     
                                                         </button>
                                                     </div>
@@ -277,7 +281,7 @@ export default function Feed () {
 
         if(memes.length == 0) {
             return (
-                <h4>
+                <h4 style={{textAlign:"center"}}>
                     There are no Memes For Display
                 </h4>
             )

@@ -72,7 +72,9 @@ export default function Starred () {
 
     const fetchAllStarredMemes = async () => {
         try {
+            console.log("data")
             const data= await contractWithProvider.fetchMyStarredMemes(person);
+            
             console.log(data)
             const tx = await Promise.all(data.map(async i => {
               
@@ -257,24 +259,7 @@ export default function Starred () {
                                                                 ) 
                                                                 :
                                                                 (
-                                                                    // <>
-                                                                    // {
-                                                                    //     Startoggler ? 
-                                                                    //     (
-                                                                    //         <>
-                                                                    //         <img src='./filledStar.png' alt='STAR'  style={{width:"20px",height:"20px"}}  />
-                                                                    //         {card.NumberOfStars}
-                                                                    //         </>
-                                                                    //     ) 
-                                                                    //     : 
-                                                                    //     (
-                                                                    //         <>
-                                                                    //         <img src='./strokeStar.png' alt='STAR' style={{width:"20px",height:"20px"}}  />
-                                                                    //         {card.NumberOfStars}
-                                                                    //         </>
-                                                                    //     )
-                                                                    // }
-                                                                    // </>
+                                                                   
                                                                     <>
                                                                             <img src='./strokeStar.png' alt='STAR' style={{width:"20px",height:"20px"}}  />
                                                                             {card.NumberOfStars}

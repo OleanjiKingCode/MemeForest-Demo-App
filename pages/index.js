@@ -114,7 +114,8 @@ export default function Home() {
           Name : i.Name,
           Address : i.MemeberAddress,
           Date: i.Datejoined,
-          Memes : i.MyMemes.toNumber()
+          Memes : i.MyMemes.toNumber(),
+          Starred :i.MyStarredMemes.toNumber()
          
          }
          return list
@@ -205,6 +206,9 @@ const renderButton = () => {
                    <div> 
                      Number of Uploads :{lists.Memes}
                    </div>
+                   <div>
+                     Number Of Stars {lists.Starred}
+                    </div>
                    <div> 
                     Date Joined: {lists.Date}
                    </div>

@@ -33,8 +33,10 @@ describe("Greeter", function () {
     const fectme = await meme.GetMemberByAddr(addr);
     console.log(fectme);
     let another = new Date().toISOString().slice(0, 10);
-    await meme.connect(buyerAddress).CreateMemeItems("meme1",addr,"filememe1",another,"this is the first meme");
-    await meme.connect(thirdone).CreateMemeItems("meme2",addr2,"filememe2",another,"hungry man meme");
+    // {http://arweave.net/31TaDv7KQHVUBpExX4G5KljQ2Hut4i1qKqDomBIk0ko}
+    // http://arweave.net/whJBX4UfrR-b6D8U7N7asbXeh3oYZW100AQpBaOtqbs
+    await meme.connect(buyerAddress).CreateMemeItems("http://arweave.net/31TaDv7KQHVUBpExX4G5KljQ2Hut4i1qKqDomBIk0ko",addr,another);
+    await meme.connect(thirdone).CreateMemeItems("http://arweave.net/whJBX4UfrR-b6D8U7N7asbXeh3oYZW100AQpBaOtqbs",addr2,another);
 
     const Allmeme = await meme.fetchAllMemes()
     console.log(Allmeme)
@@ -47,16 +49,16 @@ describe("Greeter", function () {
 
 
     console.log("fetching starred memes right now...............")
-    const FetchStarredMemes = await meme.connect(buyerAddress).fetchMyStarredMemes();
+    const FetchStarredMemes = await meme.connect(buyerAddress).fetchMyStarredMemes(addr);
 
     console.log(FetchStarredMemes)
     console.log("fetching starred memes right now...............")
 
     console.log("fetching my meme")
-    const first = await meme.connect(buyerAddress).fetchMyMeme()
+    const first = await meme.connect(buyerAddress).fetchMyMeme(addr)
     console.log(first)
     console.log("fetching my second meme")
-    const second = await meme.connect(thirdone).fetchMyMeme()
+    const second = await meme.connect(thirdone).fetchMyMeme(addr2)
     console.log(second)
 
   });

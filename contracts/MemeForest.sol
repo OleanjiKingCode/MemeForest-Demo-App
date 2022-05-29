@@ -4,7 +4,7 @@ pragma solidity ^0.8.7;
 import "hardhat/console.sol";
 import "@openzeppelin/contracts/utils/Counters.sol";
 import "@openzeppelin/contracts/security/ReentrancyGuard.sol";
-
+import "hardhat/console.sol";
 
 contract MemeForest is ReentrancyGuard{
     using Counters for Counters.Counter;
@@ -231,54 +231,63 @@ contract MemeForest is ReentrancyGuard{
     }
 
     function fetchMyStarredMemes(address sender) public view returns (MemeFiles[] memory) {
-        uint currentMemeNum = NumOfAllMemes.current();
-
-    uint currentMemberNum = NumOfAllMembers.current();
+        uint currentMemberNum = NumOfAllMembers.current();
         uint currentNum;
         for (uint i = 0; i < currentMemberNum; i++) {
             if(sender == IdMembers[i+1].MemeberAddress){
-                currentNum = IdMembers[i+1].MyStarredMemes;
-                 
+                uint val = IdMembers[i+1].MyId;
+                currentNum = IdMembers[val].MyStarredMemes;
             }
         }
-
-
-        uint currentIndex = currentMemeNum;
-        MemeFiles[] memory memes = new MemeFiles[] (currentNum);
-        for (uint i = 0; i < currentMemeNum; i++) {
-            uint id = IdMemeFiles[i+1].fileId;
-            address person = sender;
-            if(DidyouStar[person][id] == true && IdMemeFiles[i+1].starred== true ){
+      
+        uint currentMemeNum = NumOfAllMemes.current();
+        MemeFiles[] memory memes  = new MemeFiles[] (currentNum);
+                
+        uint currentIndex = 0;
+        for (uint index = 0; index < currentMemeNum; index++) {
+            uint id = IdMemeFiles[index+1].fileId;
+            
+            if(DidyouStar[sender][id] == true && IdMemeFiles[id].starred == true ){
+                
             MemeFiles storage memeFiles = IdMemeFiles[id];
-
-            memes[currentIndex - 1] = memeFiles;
-            currentIndex-=1;
+            memes[currentIndex] = memeFiles;
+            currentIndex+=1;
+              
             }
-        }
+             
+        }     
+         
         return memes;
+         
     }
 
     function fetchMyMeme(address sender) public view returns (MemeFiles[] memory) {
-        address Sender = sender;
-        uint currentMemeNum = NumOfAllMemes.current();
+       
+       
          uint currentMemberNum = NumOfAllMembers.current();
         uint currentNum;
         for (uint i = 0; i < currentMemberNum; i++) {
             if(sender == IdMembers[i+1].MemeberAddress){
-                currentNum = IdMembers[i+1].MyMemes;
+                 uint val = IdMembers[i+1].MyId;
+                currentNum = IdMembers[val].MyMemes;
                  
             }
         }
-        uint currentIndex = currentMemeNum;
+        
+    
+
+
+     uint currentMemeNum = NumOfAllMemes.current();
+        uint currentIndex = 0;
         MemeFiles[] memory memes = new MemeFiles[] (currentNum);
          for (uint i = 0; i < currentMemeNum; i++) {
              uint id = IdMemeFiles[i+1].fileId;
-             if( IdMemeFiles[id].Owner == Sender ){
+             if( IdMemeFiles[id].Owner == sender ){
                  
             MemeFiles storage memeFiles = IdMemeFiles[id];
-
-            memes[currentIndex - 1] = memeFiles;
-            currentIndex-=1;
+              console.log(sender);
+            memes[currentIndex] = memeFiles;
+            currentIndex+=1;
              }
          }
          return memes;
