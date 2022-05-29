@@ -4,8 +4,8 @@
   
   /* width:auto;
   padding:0 0  10px -10px;*/
-  margin-left: 5px;
-  background-color:#f1f1f1 
+  /* margin-left: 5px; */
+  /* background-color:#f1f1f1  */
 }
 
 .table{
@@ -47,6 +47,7 @@
 
 }
 .Memebox{
+  
   box-shadow: 0px 5px 10px 0px rgba(114, 113, 113, 0.452);
 }
 .second{
@@ -62,18 +63,22 @@
   /* height: 0px; */
 }
 .main {
-  height: 80vh ;
+  /* height: 80vh ; */
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  overflow: hidden;
+  /* overflow-y: scroll; */
 }
 .mains {
-  height: 80vh ;
+  /* height: 80vh ; */
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  overflow: hidden;
+  /* overflow-y: scroll; */
 }
 .download{
   box-shadow: 0px 5px 10px 0px rgba(114, 113, 113, 0.452);
@@ -272,14 +277,14 @@
 }
 .topper{
   margin-left: 0px;
-  /* position: absolute; */
+ 
   width: inherit;
   height: 100px;
   background-color: rgb(223, 223, 223);
     display: flex;
     align-items: center;
     justify-content: space-between;
-    /* margin-bottom: 10px; */
+    
 }
 
 .Logo{

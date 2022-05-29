@@ -77,10 +77,10 @@ function MyApp({ Component, pageProps }) {
 
 
     <div className='container-fluid' >
-        <div className='row'>
-        <div className='col-md-2 text-white p-0' style={{backgroundColor:"#228B22", height:"100vh",position:"fixed", overflow:"hidden"}}>
+        <div className='row d-flex align-items-center' style={{flexDirection:"row"}}>
+        <div className='col-md-2 text-white p-0' style={{backgroundColor:"#228B22", height:"100vh", overflow:"hidden"}}>
             <Link href="/">
-              <a  className={styles.first} >
+              <a  className={styles.first}>
                 <div className='font-weight-bold px-2' style={{flexDirection:"column", color:"#b8c7ce", fontSize:"22px"}}>
                   <p>OLEANJI MemeForest</p>
                 </div>
@@ -127,11 +127,11 @@ function MyApp({ Component, pageProps }) {
             </Link>
             
           </div>
-          <div className='col-md-10' style={{backgroundColor:"#f1f1f1" ,marginLeft:"225px"}} >
+          <div className='col-md-10' >
               <div className='row d-flex align-items-center justify-content-center' style={{flexDirection:"column"}}>
               
         
-          <div className='col-md-12 ' style={{height:"100vh",  width:"100%",padding:"0",position:"relative"}} >
+          <div className='col-md-12 ' style={{height:"100vh",overflow:"hidden",overflowY:"scroll",  width:"100%",padding:"0",position:"relative"}} >
             <WagmiProvider client={wagmiClient}>
               <RainbowKitProvider chains={chains}>
                 <MainContext.Provider value={{

@@ -182,7 +182,7 @@ export default function Create () {
         if(AMember){
             if(balance > 0.01) {
                 return( 
-                    <div className={styles.Memebox} style={{borderRadius:"25px", padding:"20px", textAlign:"center",margin:"5px 0 5px 0" }}> 
+                    <div className={styles.Memebox} style={{borderRadius:"25px", padding:"20px", textAlign:"center",margin:"20px 0 20px 0" }}> 
                         <h3>
                             UPLOAD YOUR MEME 
                         </h3>
