@@ -153,6 +153,10 @@ const renderButton = () => {
     
     return(
      <div>
+       <h3 className={styles.title}>
+          Welcome to Meme Forest
+        </h3>
+        <br/>
       <button onClick={Initialize}  style={{border:"none", textAlign:"center", 
             padding:"10px 20px",color:"white",  fontSize:"10px", 
             backgroundColor:"blue",marginTop:"20px",marginLeft:"20px", borderRadius:"10px"}}>
@@ -162,7 +166,7 @@ const renderButton = () => {
                </div>
     )
   }
-  if(haveInitialised &&  balance <= 0) {
+  if(balance <= 0) {
     console.log(AMember)
     return (
       <div>
@@ -185,31 +189,35 @@ const renderButton = () => {
   }
   if(haveInitialised && balance > 0) {
     return(
-      <div>
+      <div style={{fontSize:"19px", fontWeight:"700"}}>
         You are a member with Funding balance of {balance}
-        <br/> <br/> <br/>
+        <br/> <br/>
         {
           memberDetails.map((lists,i) => {
             
             return(
                 
-                <div key={i}  style={{fontSize:"14px"}}>
+                <div key={i}  style={{fontSize:"20px", fontWeight:"700"}}>
                   {
                     lists.Address == person &&
                     <div>
-                    <div> 
-                    Name: {lists.Name}
+                    <div style={{ padding:"30px 10px", display:"flex", alignItems:"center"}} > 
+                    Name: 
+                    <div style={{fontSize:"14px", fontWeight:"500", padding:"30px 0px"}}>
+                    {lists.Name}
+                    </div>
+                   
                    </div>
-                   <div> 
+                   <div style={{ padding:"30px 10px"}}> 
                     Address: {lists.Address}
                    </div>
-                   <div> 
-                     Number of Uploads :{lists.Memes}
+                   <div style={{ padding:"30px 10px"}}> 
+                     Number of Uploads: {lists.Memes}
                    </div>
-                   <div>
-                     Number Of Stars {lists.Starred}
+                   <div style={{ padding:"30px 10px"}}>
+                     Number Of Starred Memes: {lists.Starred}
                     </div>
-                   <div> 
+                   <div style={{ padding:"30px 10px"}}> 
                     Date Joined: {lists.Date}
                    </div>
                     </div>
@@ -279,9 +287,7 @@ const renderButton = () => {
       </div>
     </div>
       <div  className={styles.main}> 
-        <h3 className={styles.title}>
-          Welcome to Meme Forest
-        </h3>
+        
           {renderButton()}
         
 

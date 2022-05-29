@@ -273,13 +273,13 @@ export default function Create () {
 
 
     return (
-        <div className={styles.container}>
+        <div>
           <Head>
             <title>Home</title>
             <meta name="description" content="By Oleanji" />
             <link rel="icon" href="/favicon.ico" />
           </Head>
-        <div className={styles.topper} >
+        <div className={styles.topper}>
           <div className={styles.Logo} >
     
           </div>

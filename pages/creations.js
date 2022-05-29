@@ -425,7 +425,7 @@ const fetchMyMemes = async () => {
             <ConnectButton />
           </div>
         </div>
-        <div style={{padding:"20px"}}> 
+        <div style={{padding:" 120px 20px 20px 20px"}}> 
        
           {renderButton()}
         
