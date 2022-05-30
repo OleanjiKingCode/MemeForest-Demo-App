@@ -59,7 +59,7 @@ function MyApp({ Component, pageProps }) {
         {  providerUrl: "https://polygon-mumbai.g.alchemy.com/v2/seH0s7cQOTefJ8KKCf46st-T5cCl4ZBZ"}
     );
       await bundlr.ready()
-      console.log(bundlr)
+     
       
       setBundlrInstance(bundlr)
       bundlrRef.current = bundlr
