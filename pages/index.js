@@ -20,17 +20,17 @@ export default function Home() {
   } = useContext(MainContext)
   const { data} = useAccount()
   const person = data?.address;
-  const {isConnected, isDisconnected, isIdle} = useConnect()
+
   const [name, setName] = useState("")
   const [fund, setFund] = useState(0)
   const [loading,setLoading] = useState(false)
   const [haveInitialised,setHaveInitialised] = useState(false)
   const [AMember,setAMember] = useState(false)
-  const[uploads, setUploads] = useState(0)
+
   const[memberDetails,setMemberDetails] = useState([])
-  const web3ModalRef = useRef();
+  
   const provider = useProvider()
-  const { data: signer, isError, isLoading } = useSigner()
+  const { data: signer } = useSigner()
   const contractWithSigner = useContract({
       addressOrName: MemeForestAddress,
       contractInterface: MEME.abi,
@@ -75,9 +75,11 @@ export default function Home() {
 
   const Initialize = async () => {
     try {
+      setLoading(true)
       initialize();
       
       setHaveInitialised(true)
+      setLoading(false)
     } catch (error) {
       console.log(error)
     }
@@ -87,7 +89,7 @@ export default function Home() {
 
   const  fundWallet = async () =>{
     try {
-
+      setLoading(true)
       if (!fund  ) return
       const fundedamount = new BigNumber(fund).multipliedBy(bundlrInstance.currencyConfig.base[1])
       if(fundedamount.isLessThan(1)){
@@ -97,7 +99,7 @@ export default function Home() {
       
       console.log(fundedamount)
       const funded = await bundlrInstance.fund(fundedamount)
-     
+      setLoading(false)
       fetchBalance()
       
     } catch (error) {
@@ -152,7 +154,7 @@ const renderButton = () => {
   if (AMember && !haveInitialised) {
     
     return(
-     <div>
+     <div style={{display:"flex", alignItems:"center", flexDirection:"column"}}>
        <h3 className={styles.title}>
           Welcome to Meme Forest
         </h3>
@@ -163,15 +165,15 @@ const renderButton = () => {
               Initialize
           </button>
              
-               </div>
+        </div>
     )
   }
-  if(balance <= 0) {
+  if(balance <= 0.01) {
     console.log(AMember)
     return (
-      <div>
+      <div style={{textAlign:"center"}}>
           You are a Now a member. <br/>
-          But No funding to work with.<br/>
+          But funding is too small to work with.<br/>
         <input
           placeholder='Fund your wallet'
           type="number"
@@ -203,22 +205,32 @@ const renderButton = () => {
                     <div>
                     <div style={{ padding:"30px 10px", display:"flex", alignItems:"center"}} > 
                     Name: 
-                    <div style={{fontSize:"14px", fontWeight:"500", padding:"30px 0px"}}>
+                   <span style={{fontSize:"18px" ,fontWeight:"400", marginTop:"5px " ,marginLeft:"20px"}}>
                     {lists.Name}
-                    </div>
+                    </span>
                    
                    </div>
                    <div style={{ padding:"30px 10px"}}> 
-                    Address: {lists.Address}
+                    Address: 
+                    <span style={{fontSize:"18px" ,fontWeight:"400", marginTop:"5px " ,marginLeft:"20px"}}>
+                    {lists.Address}
+                    </span>
                    </div>
                    <div style={{ padding:"30px 10px"}}> 
-                     Number of Uploads: {lists.Memes}
+                     Number of Uploads: 
+                     <span style={{fontSize:"18px" ,fontWeight:"400", marginTop:"5px " ,marginLeft:"20px"}}>
+                     {lists.Memes}
+                     </span>
                    </div>
                    <div style={{ padding:"30px 10px"}}>
-                     Number Of Starred Memes: {lists.Starred}
+                     Number Of Starred Memes:
+                     <span style={{fontSize:"18px" ,fontWeight:"400", marginTop:"5px " ,marginLeft:"20px"}}>
+                      {lists.Starred} </span>
                     </div>
                    <div style={{ padding:"30px 10px"}}> 
-                    Date Joined: {lists.Date}
+                    Date Joined: 
+                    <span style={{fontSize:"18px" ,fontWeight:"400", marginTop:"5px " ,marginLeft:"20px"}}>
+                    {lists.Date} </span>
                    </div>
                     </div>
                   }

@@ -1,5 +1,4 @@
 import Head from 'next/head'
-import Image from 'next/image'
 import Web3Modal from "web3modal";
 import styles from '../styles/Home.module.css'
 import { ConnectButton } from '@rainbow-me/rainbowkit';

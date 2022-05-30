@@ -38,7 +38,9 @@ export default function Starred () {
     const router = useRouter()
 
     useEffect(() => {
-        
+        setInterval(async () => {
+            
+        }, 5 * 1000);
         fetchAllStarredMemes();
 }, []);
     useEffect(() => {
