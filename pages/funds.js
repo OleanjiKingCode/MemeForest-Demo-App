@@ -141,7 +141,7 @@ export default function funds() {
         //   }
           
         //   console.log(fundedamount)
-
+        console.log(withdrawalamount)
           const withdraw = await bundlrInstance.withdrawBalance(withdrawalamount)
           setLoading(false)
           fetchBalance()
