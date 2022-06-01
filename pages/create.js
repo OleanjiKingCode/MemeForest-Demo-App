@@ -9,6 +9,22 @@ import { MainContext } from '../context';
 import { ethers,providers, Contract } from "ethers";
 import MEME from '../artifacts/contracts/MemeForest.sol/MemeForest.json'
 import { useRouter } from 'next/router';
+import { faHome } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faCode,faHighlighter,faSpinner } from '@fortawesome/free-solid-svg-icons';
+import { library } from '@fortawesome/fontawesome-svg-core';
+import { fab } from '@fortawesome/free-brands-svg-icons';
+import {
+  faGithubAlt,
+  faGoogle,
+  faFacebook,
+  faTwitter
+} from '@fortawesome/free-brands-svg-icons';
+
+library.add(
+  fab
+);
+
 
 
 export default function Create () {
@@ -188,7 +204,7 @@ export default function Create () {
                         <div className={styles.createBox}>
                         <div style={{padding:"10px", margin:"15px",  display:"flex", alignItems:"center", justifyContent:"space-between"}}>
                             <div style={{textAlign:"left"}}>
-                            Name: 
+                              Name: 
                             </div>
                            
                             <input type='text' 
@@ -226,17 +242,24 @@ export default function Create () {
                         {
                             loading ? 
                             (
-                                <button   style={{border:"none", textAlign:"center", 
-                                padding:"10px 20px",color:"white",  fontSize:"18px", 
-                                backgroundColor:"greenyellow",marginTop:"20px",marginLeft:"20px", borderRadius:"10px"}}>
-                                    ...Loading...
-                                </button>
+                                // <button   style={{border:"none", textAlign:"center", 
+                                // padding:"10px 20px",color:"white",  fontSize:"18px", 
+                                // backgroundColor:"greenyellow",marginTop:"20px",marginLeft:"20px", borderRadius:"10px"}}>
+                                //     {/* <FontAwesomeIcon icon={faCode} /> */}
+                                //     ...Loading...
+                                // </button>
+                                <div>
+
+                                <FontAwesomeIcon icon={faSpinner}  />
+                                {/* <FontAwesomeIcon icon="fa-solid fa-spinner" /> */}
+                                </div>
                             ) : 
                             (
                                 <button onClick={Uploading}  style={{border:"none", textAlign:"center", 
                                 padding:"10px 20px",color:"white",  fontSize:"18px", 
                                 backgroundColor:"greenyellow",marginTop:"20px",marginLeft:"20px", borderRadius:"10px"}}>
-                                    Create Meme
+                                 Create Meme
+                                
                                 </button>
                             )
                         }

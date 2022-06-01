@@ -119,7 +119,11 @@ function MyApp({ Component, pageProps }) {
                 Funds
               </div>
             </Link>
-
+            <Link href="/about">
+              <div className={styles.hover}>
+                About
+              </div>
+            </Link>
             <Link href="/create">
               <div  className={styles.hoverMeme} /*className='mx-4 my-5 px-4 py-2 '*/ style={{ fontWeight:"500", borderRadius:"50px"}}>
                 Create Meme
