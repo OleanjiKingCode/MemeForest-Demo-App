@@ -10,6 +10,7 @@ import { ethers,providers, Contract } from "ethers";
 import MEME from '../artifacts/contracts/MemeForest.sol/MemeForest.json'
 import { useRouter } from 'next/router';
 import BigNumber from 'bignumber.js';
+import { FaSpinner } from 'react-icons/fa';
 
 
 export default function funds() {
@@ -219,7 +220,7 @@ export default function funds() {
                         <button   style={{border:"none", textAlign:"center", 
                         padding:"10px 20px",color:"white",  fontSize:"10px", 
                         backgroundColor:"green",marginTop:"40px", borderRadius:"10px"}}>
-                        . . .
+                        <FaSpinner icon="spinner" className={styles.spinner} />
                     </button>
                     )
                     :
@@ -261,7 +262,7 @@ export default function funds() {
                         <button style={{border:"none", textAlign:"center", 
                     padding:"10px 20px",color:"white",  fontSize:"10px", 
                     backgroundColor:"red",marginTop:"40px", borderRadius:"10px"}}>
-                    . . .
+                    <FaSpinner icon="spinner" className={styles.spinner} />
                 </button>
                     ) 
                     :

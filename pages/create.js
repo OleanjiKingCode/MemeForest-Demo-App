@@ -9,21 +9,7 @@ import { MainContext } from '../context';
 import { ethers,providers, Contract } from "ethers";
 import MEME from '../artifacts/contracts/MemeForest.sol/MemeForest.json'
 import { useRouter } from 'next/router';
-import { faHome } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faCode,faHighlighter,faSpinner } from '@fortawesome/free-solid-svg-icons';
-import { library } from '@fortawesome/fontawesome-svg-core';
-import { fab } from '@fortawesome/free-brands-svg-icons';
-import {
-  faGithubAlt,
-  faGoogle,
-  faFacebook,
-  faTwitter
-} from '@fortawesome/free-brands-svg-icons';
-
-library.add(
-  fab
-);
+import { FaSpinner } from 'react-icons/fa';
 
 
 
@@ -250,7 +236,7 @@ export default function Create () {
                                 // </button>
                                 <div>
 
-                                <FontAwesomeIcon icon={faSpinner}  />
+                                    <FaSpinner icon="spinner" className={styles.spinner} />
                                 {/* <FontAwesomeIcon icon="fa-solid fa-spinner" /> */}
                                 </div>
                             ) : 

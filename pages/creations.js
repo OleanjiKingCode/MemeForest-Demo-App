@@ -9,6 +9,7 @@ import MEME from '../artifacts/contracts/MemeForest.sol/MemeForest.json'
 import 'bootstrap/dist/css/bootstrap.css'
 import axios from "axios"
 import { useRouter } from 'next/router';
+import { FaSpinner } from 'react-icons/fa';
 
 
 export default function Creations () { 
@@ -301,7 +302,7 @@ const fetchMyMemes = async () => {
                                                                     <button className={styles.ToggleButtonLoading} 
                                                                     style={{borderRadius:"5px",border:"1px black solid",width:"90px",height:"30px",marginTop:"13px",display:"flex",alignItems:"center", justifyContent:"space-around"}}>
                                                                 <h4>
-                                                                    . . .
+                                                                <FaSpinner icon="spinner" className={styles.spinner} />
                                                                 </h4>
                                                                     </button>
                                                                 ) 
@@ -360,7 +361,7 @@ const fetchMyMemes = async () => {
                                                                         <button className={styles.ToggleButton2Loading}  
                                                                         style={{borderRadius:"5px",border:"1px black solid",width:"90px",height:"30px",marginTop:"13px",display:"flex",alignItems:"center", justifyContent:"space-around"}}>
                                                                         <h4>
-                                                                            . . . 
+                                                                        <FaSpinner icon="spinner" className={styles.spinner} />
                                                                         </h4>
                                                                         </button>
                                                                     ) 

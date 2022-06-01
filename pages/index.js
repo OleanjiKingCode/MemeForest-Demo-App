@@ -10,6 +10,7 @@ import { MainContext } from '../context';
 import BigNumber from 'bignumber.js';
 import { ethers,providers, Contract } from "ethers";
 import MEME from '../artifacts/contracts/MemeForest.sol/MemeForest.json'
+import { FaSpinner } from 'react-icons/fa';
 
 export default function Home() {
   const {
@@ -260,7 +261,7 @@ const renderButton = () => {
               <button   style={{border:"none", textAlign:"center", 
                   padding:"10px 20px",color:"white",  fontSize:"10px", 
                   backgroundColor:"blue",marginTop:"20px", marginLeft:"20px", borderRadius:"10px"}}>
-                    ...Loading...
+                   <FaSpinner icon="spinner" className={styles.spinner} />
               </button>
             ) 
             :
