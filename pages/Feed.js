@@ -24,6 +24,7 @@ export default function Feed () {
     const[loadingStar, setLoadingStar] = useState(false)
     const[memberDetails,setMemberDetails] = useState([])
     const[loadingLike, setLoadingLike] = useState(false)
+    const [IsPicture, setIsPicture] = useState(false)
     const provider = useProvider()
     const { data: signer} = useSigner()
   
@@ -49,6 +50,7 @@ export default function Feed () {
                 const Info = await axios.get(i.Memeinfo)
                 const StarAnswer= await contractWithProvider.WhatDidIStar(i.fileId,person);
                 const LikeAnswer= await contractWithProvider.WhatDidILike(i.fileId,person);
+                // (i.Info.data.image).split('/')[0] === 'image'? setIsPicture(true) : setIsPicture(false)
                 
                 let List = {
                     
@@ -148,7 +150,10 @@ export default function Feed () {
             console.log(e)
         }
     }
+    function isFileImage(file) {
 
+        return file && file ['type'].split('/')[0] === 'image';
+    }
     const renderButton = () => {
         
         if (memes.length >0){
@@ -165,7 +170,20 @@ export default function Feed () {
                                             <div className={styles.Memebox} style={{borderRadius:"25px", height:"auto",padding:"10px"}}>
                                                 <div className={styles.upperimg}  style={{borderRadius:"15px",height:"150px",overflow:"hidden", flexDirection:"column"/*, backgroundImage:`url(${card.File})`, backgroundSize:"cover",backgroundPosition:"center"*/}}>
                                                     <a href={card.File} target='_blank' style={{padding:"0", margin:"0", textDecoration:"none", }}>  
-                                                        <img src={card.File} className={styles.change} alt="..." style={{height:"150px",width:"auto",}}/>
+                                                       {
+                                                        //    IsPicture ?
+                                                        //    (
+                                                            <img src={card.File} className={styles.change} alt="..." style={{height:"150px",width:"auto",}}/>
+                                                        //    )
+                                                        //    :
+                                                        //    (
+                                                        //     <video src={card.File} className={styles.change} width="500px" height="500px"  controls="controls"/> 
+                                                        //    )
+                                                       }
+                                                       
+                                                            
+                                                           
+                                                        {/*  */}
                                                     </a>
                                                     <div className={styles.nameOfOwner} >
                                                         {
@@ -195,9 +213,21 @@ export default function Feed () {
                                                </div>
                                                 <div className='py-2 px-3' style={{borderRadius:"25px",border:"1px black solid",height:"auto",marginTop:"10px"}}>
                                                     <div className='d-flex justify-content-between ' >
-                                                        <div style={{borderRadius:"10px",width:"130px",height:"25px",marginTop:"20px", fontWeight:"700",fontSize:"18px"}}>
-                                                            {card.Name} 
-                                                        </div>
+                                                        
+                                                            {
+                                                                card.Name.length > 7 ?
+                                                                (
+                                                                    <div style={{borderRadius:"10px",width:"130px",height:"25px",marginTop:"20px", fontWeight:"900",fontSize:"12px"}}>
+                                                                        {card.Name}
+                                                                    </div> 
+                                                                ) : 
+                                                                (
+                                                                    <div style={{borderRadius:"10px",width:"130px",height:"25px",marginTop:"20px", fontWeight:"700",fontSize:"18px"}}>
+                                                                        {card.Name}
+                                                                    </div> 
+                                                                )
+                                                            }
+                                                        
                                                         <div className={styles.download} style={{borderRadius:"10px",display:"flex",alignItems:"center",justifyContent:"center",width:"40px",height:"40px"}}>
                                                         <a href={card.File} download target='_blank' rel='nonreferrer' onClick={(e) =>download(card.File,card.Name)}>  
                                                         <img src='./arrow.png' alt='' style={{width:"20px", height:"20px"}} />

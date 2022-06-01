@@ -2,11 +2,10 @@ import Head from 'next/head'
 import Web3Modal from "web3modal";
 import styles from '../styles/Home.module.css'
 import { ConnectButton } from '@rainbow-me/rainbowkit';
-import { useContract, useProvider,useSigner,useAccount,useBalance,useConnect  } from 'wagmi'
+import { useContract, useProvider,useSigner,useAccount  } from 'wagmi'
 import {MemeForestAddress} from '../constant'
-import { useEffect, useRef, useState, useContext } from "react";
+import { useEffect, useState, useContext } from "react";
 import { MainContext } from '../context';
-import { ethers,providers, Contract } from "ethers";
 import MEME from '../artifacts/contracts/MemeForest.sol/MemeForest.json'
 import { useRouter } from 'next/router';
 import { FaSpinner } from 'react-icons/fa';
@@ -24,18 +23,18 @@ export default function Create () {
     const { data} = useAccount()
     const person = data?.address;
     const [AMember,setAMember] = useState(false)
-    const [nameLink,setNameLink] = useState("")
-    const [descriptionLink,setDescriptionLink] = useState("")
     const [fileURL, setFileURL] = useState("")
     const [nameOfFile, setNameOfFile] = useState("")
     const [DescriptionOfFile, setDescriptionOfFile] = useState("")
     const [Image, setImage] = useState()
     const [viewing,setViewing] = useState()
     const[loading, setLoading] = useState(false)
-    const [nameText,setNameText] = useState ("")
-    const [desText, setDesText] = useState("")
+    const[IsVideo, setIsVideo] = useState(false)
+    const[IsImage, setIsImage] = useState(false)
+    const[valueExtension, setValueExtension] = useState("")
+
     const provider = useProvider()
-    const N = []
+    const [numberOfLoading, setNumberOfLoading] = useState(3)
     const { data: signer, isError, isLoading } = useSigner()
     const contractWithSigner = useContract({
         addressOrName: MemeForestAddress,
@@ -109,20 +108,23 @@ export default function Create () {
          
             let time = new Date().toLocaleString();
             const create = await contractWithSigner.CreateMemeItems(memeInfo,person,time)
+            setNumberOfLoading(0)
             await create.wait()
             setLoading(false)
             Feed();
+           
         } catch (error) {
             console.log(error)
         }
     }
 
-    const Uploading = async () => {
+    const Uploading = async (valueExt) => {
         try {
             setLoading(true)
            
 
-            let upload = await bundlrInstance.uploader.upload(Image, [{name: "Content-Type", value: "image/png"}])
+            let upload = await bundlrInstance.uploader.upload(Image, [{name: "Content-Type", value: valueExt}])
+            setNumberOfLoading(2)
             setFileURL(`http://arweave.net/${upload.data.id}`)
             const file = `http://arweave.net/${upload.data.id}`
 
@@ -133,6 +135,7 @@ export default function Create () {
             })
             let uploadTwo = await bundlrInstance.uploader.upload(data, [{name: "Content-Type", value: "text/plain"}])
             const MemeInfo = `http://arweave.net/${uploadTwo.data.id}`
+            setNumberOfLoading(1)
             console.log(data)
             console.log(MemeInfo)
             CreateMemes(MemeInfo);
@@ -154,6 +157,21 @@ export default function Create () {
     
     function OnFileChange(e) {
         const file = e.target.files[0]
+        const fie = file.value
+        if(fie){
+            const extension = fie.slice((Math.max(0, fie.lastIndexOf(".")) || Infinity) + 1);
+            if (extension==="mp4" || extension==="mkv" || extension ==="avi" || extension ==="m4a"){
+                setIsVideo(true);
+                setIsImage(false);
+                setValueExtension("img/mp4")
+            }
+            else{
+                setIsVideo(false);
+                setIsImage(true);
+                setValueExtension("img/png")
+            }
+        }
+        
         if(file){
             const image = URL.createObjectURL(file)
             setViewing(image)
@@ -220,28 +238,40 @@ export default function Create () {
                         </div>
                         {
                             viewing && 
-                            <div>
-                            <img src={viewing} alt='Your Image' style={{width:"400px", margin:"15px"}}/>
-                        </div> 
+                            <div> 
+                                {
+                                    IsImage?
+                                     (
+                                        <img src={viewing} alt='Your Image' style={{width:"400px", margin:"15px"}}/>
+                                    )
+                                    :
+                                    (
+                                        // <video src={viewing} width="500px" height="500px"   controls="controls"/> 
+                                        <video src={viewing} width="500px" height="500px" /> 
+          
+                                    )
+                                }
+                           
+                            </div> 
                         }
                         
                         {
                             loading ? 
                             (
-                                // <button   style={{border:"none", textAlign:"center", 
-                                // padding:"10px 20px",color:"white",  fontSize:"18px", 
-                                // backgroundColor:"greenyellow",marginTop:"20px",marginLeft:"20px", borderRadius:"10px"}}>
-                                //     {/* <FontAwesomeIcon icon={faCode} /> */}
-                                //     ...Loading...
-                                // </button>
-                                <div>
-
+                                <button   style={{border:"none", textAlign:"center", 
+                                padding:"10px 20px",color:"white",  fontSize:"18px", 
+                                backgroundColor:"greenyellow",marginTop:"20px",marginLeft:"20px", borderRadius:"10px"}}>
+                                   
                                     <FaSpinner icon="spinner" className={styles.spinner} />
-                                {/* <FontAwesomeIcon icon="fa-solid fa-spinner" /> */}
-                                </div>
+                                    <span style={{padding:"1px 6px", fontSize:"14px"}}>
+                                    {numberOfLoading}
+                                    </span>
+                                   
+                                </button>
+                               
                             ) : 
                             (
-                                <button onClick={Uploading}  style={{border:"none", textAlign:"center", 
+                                <button onClick={() => Uploading(valueExtension)}  style={{border:"none", textAlign:"center", 
                                 padding:"10px 20px",color:"white",  fontSize:"18px", 
                                 backgroundColor:"greenyellow",marginTop:"20px",marginLeft:"20px", borderRadius:"10px"}}>
                                  Create Meme

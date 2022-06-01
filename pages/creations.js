@@ -279,9 +279,19 @@ const fetchMyMemes = async () => {
                                                </div>
                                                 <div className='py-2 px-3' style={{borderRadius:"25px",border:"1px black solid",height:"auto",marginTop:"10px"}}>
                                                     <div className='d-flex justify-content-between ' >
-                                                        <div style={{borderRadius:"10px",width:"130px",height:"25px",marginTop:"20px", fontWeight:"700",fontSize:"18px"}}>
-                                                            {card.Name} 
-                                                        </div>
+                                                    {
+                                                                card.Name.length > 7 ?
+                                                                ( 
+                                                                    <div style={{borderRadius:"10px",width:"130px",height:"25px",marginTop:"20px", fontWeight:"900",fontSize:"12px"}}>
+                                                                        {card.Name}
+                                                                    </div> 
+                                                                ) : 
+                                                                (
+                                                                    <div style={{borderRadius:"10px",width:"130px",height:"25px",marginTop:"20px", fontWeight:"700",fontSize:"18px"}}>
+                                                                        {card.Name}
+                                                                    </div> 
+                                                                )
+                                                            }
                                                         <div className={styles.download} style={{borderRadius:"10px",display:"flex",alignItems:"center",justifyContent:"center",width:"40px",height:"40px"}}>
                                                         <a href={card.File} download target='_blank' rel='nonreferrer' onClick={(e) =>download(card.File,card.Name)}>  
                                                         <img src='./arrow.png' alt='' style={{width:"20px", height:"20px"}} />
