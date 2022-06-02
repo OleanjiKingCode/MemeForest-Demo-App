@@ -62,6 +62,7 @@ export default function Feed () {
                     NumberOfStars:i.Stars.toNumber(),
                     NumberOfLikes:i.Likes.toNumber(),
                     Date:i.DateOfCreation,
+                    FileType:i.FileType,
                     Description:Info.data.DescriptionOfFile,
                     DidMemberStarMe: StarAnswer,
                     DidMemberLikeMe:LikeAnswer
@@ -171,14 +172,14 @@ export default function Feed () {
                                                 <div className={styles.upperimg}  style={{borderRadius:"15px",height:"150px",overflow:"hidden", flexDirection:"column"/*, backgroundImage:`url(${card.File})`, backgroundSize:"cover",backgroundPosition:"center"*/}}>
                                                     <a href={card.File} target='_blank' style={{padding:"0", margin:"0", textDecoration:"none", }}>  
                                                        {
-                                                        //    IsPicture ?
-                                                        //    (
+                                                           (card.FileType == "img/png") ?
+                                                           (
                                                             <img src={card.File} className={styles.change} alt="..." style={{height:"150px",width:"auto",}}/>
-                                                        //    )
-                                                        //    :
-                                                        //    (
-                                                        //     <video src={card.File} className={styles.change} width="500px" height="500px"  controls="controls"/> 
-                                                        //    )
+                                                           )
+                                                           :
+                                                           (
+                                                            <video src={card.File} className={styles.change} width="500px" height="500px"  controls="controls"/> 
+                                                           )
                                                        }
                                                        
                                                             

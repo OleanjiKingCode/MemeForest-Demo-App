@@ -102,12 +102,13 @@ export default function Create () {
         }
     }
 
-    const CreateMemes = async (memeInfo) => {
+    const CreateMemes = async (memeInfo, valueExt) => {
         try {
         
          
             let time = new Date().toLocaleString();
-            const create = await contractWithSigner.CreateMemeItems(memeInfo,person,time)
+            
+            const create = await contractWithSigner.CreateMemeItems(memeInfo,person,time, valueExt)
             setNumberOfLoading(0)
             await create.wait()
             setLoading(false)
@@ -138,7 +139,7 @@ export default function Create () {
             setNumberOfLoading(1)
             console.log(data)
             console.log(MemeInfo)
-            CreateMemes(MemeInfo);
+            CreateMemes(MemeInfo,valueExt);
             
         } catch (e) {
             console.log(e)
