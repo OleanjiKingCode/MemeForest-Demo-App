@@ -34,6 +34,7 @@ contract MemeForest is ReentrancyGuard{
         uint Stars;
         uint Likes;
         string DateOfCreation;
+        string FileType;
       
     }
 
@@ -103,7 +104,8 @@ contract MemeForest is ReentrancyGuard{
 
     function CreateMemeItems( string memory memeinfo,
     address _owner, 
-    string memory _date
+    string memory _date,
+    string memory _filetype
     ) 
     public nonReentrant{
         NumOfAllMemes.increment();
@@ -115,7 +117,8 @@ contract MemeForest is ReentrancyGuard{
             false,
             0,
             0,
-            _date
+            _date,
+            _filetype
             
 
         );

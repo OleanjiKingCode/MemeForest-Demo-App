@@ -16,6 +16,29 @@
 
 
 }
+.pad{
+  padding: 0 20px;
+  animation: waving-hand 2.5s infinite;
+  transform-origin: 70% 70%;
+
+}
+@keyframes waving-hand {
+  0% { transform: rotate( 0.0deg) }
+ 10% { transform: rotate(14.0deg) }  /* The following five values can be played with to make the waving more or less extreme */
+ 20% { transform: rotate(-8.0deg) }
+ 30% { transform: rotate(14.0deg) }
+ 40% { transform: rotate(-4.0deg) }
+ 50% { transform: rotate(10.0deg) }
+ 60% { transform: rotate( 0.0deg) }  /* Reset for the last half to pause */
+100% { transform: rotate( 0.0deg) }
+}
+.image {
+  margin-top: 30px;
+}
+.image img {
+  border-radius: 100px;
+  
+}
 .td,.th{
   border:1pz solid #dddddd;
   text-align: left;
