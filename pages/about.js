@@ -60,7 +60,7 @@ export default function About() {
                 <div className='d-flex align-items-center ' style={{justifyContent:"space-around", width:"auto"}}>
                 
                 <h5>
-                    I  AM  ADEBAYO (Oleanji) I'm the Creator of MemeForest 
+                    I  AM  ADEBAYO (Oleanji) Im the Creator of MemeForest 
                 </h5>
                
                 
