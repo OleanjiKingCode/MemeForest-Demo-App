@@ -17,7 +17,7 @@ export default function About() {
             <div className="col-md-8" style={{ marginTop:"20px", width:"auto"}}>
                 <span style={{ fontSize:"18px",lineHeight:"30px", fontWeight:"700"}}>
                     This project was made by Adebayo Olamilekan (Oleanji) to put on my portfolio 
-                    as a dapp project i did solely using thesetechnologies:
+                    as a dapp project i did solely using these technologies:
                     <br/>
                     <div style={{paddingLeft:"50px"}}>
                     --&gt; Rainbow [WAGMI Client]  : for wallet connection 
