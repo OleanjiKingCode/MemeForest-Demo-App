@@ -429,9 +429,7 @@ const fetchMyMemes = async () => {
             <link rel="icon" href="/favicon.ico" />
           </Head>
         <div className={styles.topper} >
-          <div className={styles.Logo} >
-    
-          </div>
+        <img src='./LogoForest.png'  style={{width:"283px", height:"107px", marginTop:"-20px"}}/>
           <div className={styles.connect}>
             <ConnectButton />
           </div>

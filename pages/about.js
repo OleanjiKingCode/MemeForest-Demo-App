@@ -10,9 +10,9 @@ export default function About() {
         <div className="container-fluid">
             <div className="row d-flex align-items-center justfy-content-space-evenly" style={{flexDirection:"column", paddingTop:"20px"}}>
             <div className="col-md-4" style={{width:"auto", marginBottom:"40px"}} >
-                <div style={{width:"250px", height:"50px", backgroundColor:"black",paddingTop:"20px"}}>
+               <img src='./LogoForest.png'  style={{width:"425px", height:"160px"}}/>
 
-                </div>
+          
             </div>
             <div className="col-md-8" style={{ marginTop:"20px", width:"auto"}}>
                 <span style={{ fontSize:"18px",lineHeight:"30px", fontWeight:"700"}}>

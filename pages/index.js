@@ -61,10 +61,7 @@ export default function Home() {
     try {
       setLoading(true)
       let _time =  new Date().toLocaleString();
-      
-      
-      const join = await contractWithSigner.CreateMembers(name, _time)
-      
+      const join = await contractWithSigner.CreateMembers(name,_time)
       await join.wait()
       setLoading(false)
       setAMember(true)
@@ -155,7 +152,7 @@ const renderButton = () => {
   if (AMember && !haveInitialised) {
     
     return(
-     <div style={{display:"flex", alignItems:"center", flexDirection:"column"}}>
+     <div style={{textAlign:"center",height:"80vh",top:"50%", left:"50%", display:"flex", alignItems:"center",justifyContent:"center" ,flexDirection:"column"}}>
        <h3 className={styles.title}>
           Welcome to Meme Forest
         </h3>
@@ -169,10 +166,10 @@ const renderButton = () => {
         </div>
     )
   }
-  if(balance <= 0.01) {
+  if( AMember &&  balance <= 0.01) {
     console.log(AMember)
     return (
-      <div style={{textAlign:"center"}}>
+      <div style={{textAlign:"center",height:"80vh",top:"50%", left:"50%", display:"flex", alignItems:"center",justifyContent:"center" ,flexDirection:"column"}}>
           You are a Now a member. <br/>
           But funding is too small to work with.<br/>
         <input
@@ -247,7 +244,10 @@ const renderButton = () => {
 
   if(!AMember){
     return (
-      <div>
+      <div style={{textAlign:"center",height:"80vh",top:"50%", left:"50%", display:"flex", alignItems:"center",justifyContent:"center" ,flexDirection:"column"}}>
+        <h2 style={{}}>
+          Welcome To MemeForest
+        </h2>
         <input
           placeholder='Enter Any Name'
           type="text"
@@ -293,8 +293,7 @@ const renderButton = () => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
     <div className={styles.topper}>
-      <div className={styles.Logo}>
-      </div>
+    <img src='./LogoForest.png'  style={{width:"283px", height:"107px", marginTop:"-20px"}}/>
       <div className={styles.connect}>
         <ConnectButton />
       </div>

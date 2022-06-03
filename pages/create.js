@@ -109,7 +109,7 @@ export default function Create () {
             let time = new Date().toLocaleString();
             
             const create = await contractWithSigner.CreateMemeItems(memeInfo,person,time, valueExt)
-            setNumberOfLoading(0)
+            setNumberOfLoading(1)
             await create.wait()
             setLoading(false)
             Feed();
@@ -125,7 +125,7 @@ export default function Create () {
            
 
             let upload = await bundlrInstance.uploader.upload(Image, [{name: "Content-Type", value: valueExt}])
-            setNumberOfLoading(2)
+            
             setFileURL(`http://arweave.net/${upload.data.id}`)
             const file = `http://arweave.net/${upload.data.id}`
 
@@ -134,9 +134,10 @@ export default function Create () {
                 DescriptionOfFile, 
                 image:file
             })
+            setNumberOfLoading(2)
             let uploadTwo = await bundlrInstance.uploader.upload(data, [{name: "Content-Type", value: "text/plain"}])
             const MemeInfo = `http://arweave.net/${uploadTwo.data.id}`
-            setNumberOfLoading(1)
+           
             console.log(data)
             console.log(MemeInfo)
             CreateMemes(MemeInfo,valueExt);
@@ -158,9 +159,12 @@ export default function Create () {
     
     function OnFileChange(e) {
         const file = e.target.files[0]
-        const fie = file.value
+        // console.log("inhere")
+        const fie = e.target.files[0].name
+        // console.log(fie)
         if(fie){
             const extension = fie.slice((Math.max(0, fie.lastIndexOf(".")) || Infinity) + 1);
+            // console.log(extension)
             if (extension==="mp4" || extension==="mkv" || extension ==="avi" || extension ==="m4a"){
                 setIsVideo(true);
                 setIsImage(false);
@@ -319,9 +323,7 @@ export default function Create () {
             <link rel="icon" href="/favicon.ico" />
           </Head>
         <div className={styles.topper}>
-          <div className={styles.Logo} >
-    
-          </div>
+        <img src='./LogoForest.png'  style={{width:"283px", height:"107px", marginTop:"-20px"}}/>
           <div className={styles.connect}>
             <ConnectButton />
           </div>
