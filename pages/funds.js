@@ -11,14 +11,14 @@ import BigNumber from 'bignumber.js';
 import { FaSpinner } from 'react-icons/fa';
 
 
-export default function funds() {
+export default function Funds () { 
 
   const {
     initialize,
     fetchBalance,
     balance,
     bundlrInstance
-} = useContext(MainContext)
+  } = useContext(MainContext)
     const { data} = useAccount()
     const person = data?.address;
     const [AMember,setAMember] = useState(false)
