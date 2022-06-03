@@ -70,12 +70,12 @@ export default function About() {
             <div className='col-md-3' style={{ width:"300px", height:"300px", padding:"90px"}}>
               <img src="twitter.png" style={{width: "48px", height:"48px", borderRadius:"25px"}} /> 
              
-              <a  href="https://twitter.com/Oleanji_sol" rel='nonrefferer'  target="_blank">
+              <a  href="https://twitter.com/Oleanji_sol"   target="_blank" rel="noreferrer">
                  Twitter
              </a>
              <br/>
               <img src="linkedin.png" style={{width: "48px", height:"48px", borderRadius:"25px"}} />
-              <a href="https://www.linkedin.com/in/Adebayo-olamilekan-oleanji" rel='nonrefferer'  target="_blank">
+              <a href="https://www.linkedin.com/in/Adebayo-olamilekan-oleanji"  target="_blank" rel="noreferrer">
                  LinkedIn
              </a>
              

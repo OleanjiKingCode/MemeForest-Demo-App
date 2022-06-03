@@ -228,7 +228,7 @@ export default function Starred () {
 
                                             <div className={styles.Memebox} style={{borderRadius:"25px", height:"auto",padding:"10px"}}>
                                                 <div className={styles.upperimg}  style={{borderRadius:"15px",height:"150px",overflow:"hidden" ,flexDirection:"column"}}>
-                                                <a href={card.File} target='_blank' style={{padding:"0", margin:"0", textDecoration:"none", }}>  
+                                                <a href={card.File} target='_blank' rel="noreferrer" style={{padding:"0", margin:"0", textDecoration:"none", }}>  
                                                     <img src={card.File} className={styles.change} alt="..." style={{height:"150px",width:"auto",}}/>
                                                 </a>
                                                 <div className={styles.nameOfOwner} >
@@ -273,7 +273,7 @@ export default function Starred () {
                                                                 )
                                                             }
                                                         <div className={styles.download} style={{borderRadius:"10px",display:"flex",alignItems:"center",justifyContent:"center",width:"40px",height:"40px"}}>
-                                                        <a href={card.File} download target='_blank' rel='nonreferrer' onClick={(e) =>download(card.File,card.Name)}>  
+                                                        <a href={card.File} download target='_blank' rel="noreferrer"  onClick={(e) =>download(card.File,card.Name)}>  
                                                         <img src='./arrow.png' alt='' style={{width:"20px", height:"20px"}} />
                                                         </a>
                                                        
