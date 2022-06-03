@@ -359,7 +359,7 @@ export default function Starred () {
         <div className={styles.container}>
           <Head>
             <title>Home</title>
-            <meta name="description" content="By Oleanji" />
+            <meta name="description" content="By Oleanji"/>
             <link rel="icon" href="/favicon.ico" />
           </Head>
         <div className={styles.topper} >
