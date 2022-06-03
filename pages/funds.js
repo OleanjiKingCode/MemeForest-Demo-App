@@ -1,12 +1,10 @@
 import Head from 'next/head'
-import Web3Modal from "web3modal";
 import styles from '../styles/Home.module.css'
 import { ConnectButton } from '@rainbow-me/rainbowkit';
-import { useContract, useProvider,useSigner,useAccount,useBalance,useConnect  } from 'wagmi'
+import { useContract, useProvider,useSigner,useAccount} from 'wagmi'
 import {MemeForestAddress} from '../constant'
-import { useEffect, useRef, useState, useContext } from "react";
+import { useEffect, useState, useContext } from "react";
 import { MainContext } from '../context';
-import { ethers,providers, Contract } from "ethers";
 import MEME from '../artifacts/contracts/MemeForest.sol/MemeForest.json'
 import { useRouter } from 'next/router';
 import BigNumber from 'bignumber.js';
@@ -15,12 +13,12 @@ import { FaSpinner } from 'react-icons/fa';
 
 export default function funds() {
 
-    const {
-        initialize,
-        fetchBalance,
-        balance,
-        bundlrInstance
-    } = useContext(MainContext)
+  const {
+    initialize,
+    fetchBalance,
+    balance,
+    bundlrInstance
+} = useContext(MainContext)
     const { data} = useAccount()
     const person = data?.address;
     const [AMember,setAMember] = useState(false)
