@@ -162,7 +162,7 @@ export default function funds() {
     const renderButton = () => {
         if(!AMember){
             return (
-                <div style={{ padding:"20px", textAlign:"center",margin:"5px 0 5px 0" }}> 
+                <div style={{ padding:"20px", textAlign:"center",margin:"5px 0 5px 0" ,height:"80vh",top:"50%", left:"50%", display:"flex", alignItems:"center",justifyContent:"center" ,flexDirection:"column" }}> 
                     <div style={{fontSize:"18px"}}>
                         Go Back Home and Register before you can interact with wallet
                     </div>
@@ -176,7 +176,7 @@ export default function funds() {
         if (AMember && !haveInitialised) {
           
           return(
-           <div >
+           <div style={{textAlign:"center",height:"80vh",top:"50%", left:"50%", display:"flex", alignItems:"center",justifyContent:"center" ,flexDirection:"column"}}>
               
                 <button onClick={Initialize}  style={{border:"none", textAlign:"center", 
                   padding:"10px 20px",color:"white",  fontSize:"10px", 
@@ -192,7 +192,7 @@ export default function funds() {
           return (
             <div className='container-fluid'>
 
-           <div style={{textAlign:"center", fontSize:"20px", fontWeight:"600"}}>
+           <div style={{textAlign:"center", fontSize:"20px", fontWeight:"600",}}>
                Balance in Wallet : {balance}
            </div>
             <div className='row d-flex align-items-center ' style={{justifyContent:"space-between"}}>

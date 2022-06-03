@@ -192,7 +192,7 @@ export default function Create () {
     const renderButton = () =>{
         if(!AMember){
             return (
-                <div style={{ padding:"20px", textAlign:"center",margin:"5px 0 5px 0" }}> 
+                <div style={{ padding:"20px", textAlign:"center",margin:"5px 0 5px 0",height:"80vh",top:"50%", left:"50%", display:"flex", alignItems:"center",justifyContent:"center" ,flexDirection:"column" }}> 
                     <div style={{fontSize:"18px"}}>
                         Go Back Home and Register before Uploading Memes 
                     </div>

@@ -185,7 +185,7 @@ export default function Starred () {
       const renderButton = () => {
         if(!AMember){
             return (
-                <div style={{ padding:"20px", textAlign:"center",margin:"5px 0 5px 0" }}> 
+                <div style={{ padding:"20px", textAlign:"center",margin:"5px 0 5px 0",height:"80vh",top:"50%", left:"50%", display:"flex", alignItems:"center",justifyContent:"center" ,flexDirection:"column" }}> 
                     <div style={{fontSize:"18px"}}>
                         Go Back Home and Register before Seeing Starred Memes 
                     </div>
@@ -200,7 +200,7 @@ export default function Starred () {
            if(starredMemes.length == 0) 
            {
             return (
-                <div style={{ padding:"20px", textAlign:"center",margin:"5px 0 5px 0" }}> 
+                <div style={{ padding:"20px", textAlign:"center",margin:"5px 0 5px 0",height:"80vh",top:"50%", left:"50%", display:"flex", alignItems:"center",justifyContent:"center" ,flexDirection:"column"  }}> 
                     <div style={{fontSize:"18px"}}>
                         You have No Starred Memes Go back to Create Memes 
                     </div>
