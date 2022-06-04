@@ -46,13 +46,11 @@ export default function Feed () {
             const data= await contractWithProvider.fetchAllMemes();
             const tx = await Promise.all(data.map(async i => {
                 const Info = await axios.get(i.Memeinfo)
-                // const delay = ms => new Promise(res => setTimeout(res, ms));
-                // await delay(10000);
-                
+               
                 const StarAnswer= await contractWithProvider.WhatDidIStar(i.fileId,person);
                 
                 const LikeAnswer= await contractWithProvider.WhatDidILike(i.fileId,person);
-                console.log("here")
+               
                
                 
                 let List = {
@@ -71,7 +69,7 @@ export default function Feed () {
                     DidMemberLikeMe:LikeAnswer
                    
                 }
-                console.log("here too")
+               
                 return List
                 
             }));
@@ -102,17 +100,17 @@ export default function Feed () {
             setLoadingStar(true)
           
             if (bool == true) {
-                // unstarring
+               
                 const data= await contractWithSigner.RemoveStarMeme(id)
                 await data.wait()
                 await fetchAllMemes();
-                // setStarToggler(false)
+               
             }
             else {
                 const data= await contractWithSigner.StarMeme(id)
                 await data.wait()
                 await fetchAllMemes();
-                // setStarToggler(true)
+                
             }
             setLoadingStar(false)
 
@@ -121,37 +119,42 @@ export default function Feed () {
         }
     }
     const download = (e,name) => {
+        try {
+            axios({
+                url: e, //your url
+                method: 'GET',
+                responseType: 'blob', // important
+            }).then((response) => {
+                const url = window.URL.createObjectURL(new Blob([response.data]));
+                const link = document.createElement('a');
+                link.href = url;
+                  link.setAttribute("download", name+".png" ); 
+                  document.body.appendChild(link);
+                  link.click();
+                
+              });
+        } catch (error) {
+            console.log(error)
+        }
         
-        axios({
-            url: e, //your url
-            method: 'GET',
-            responseType: 'blob', // important
-        }).then((response) => {
-            const url = window.URL.createObjectURL(new Blob([response.data]));
-            const link = document.createElement('a');
-            link.href = url;
-              link.setAttribute("download", name+".png" ); 
-              document.body.appendChild(link);
-              link.click();
-            
-          });
+        
          
       };
     const LikeMeme = async (id,bool) =>{
         try {
             setLoadingLike(true)
             if (bool == true) {
-                // unliking
+               
                 const data= await contractWithSigner.UnLikeMeme(id)
                 await data.wait()
                 await fetchAllMemes(); 
-            //    setLikeToggler(false)
+            
             }
             else {
                 const data= await contractWithSigner.LikeMeme(id)
                 await data.wait()
                 await fetchAllMemes();
-                // setLikeToggler(true)
+                
             }
             setLoadingLike(false)
 
@@ -159,10 +162,7 @@ export default function Feed () {
             console.log(e)
         }
     }
-    function isFileImage(file) {
-
-        return file && file ['type'].split('/')[0] === 'image';
-    }
+    
     const renderButton = () => {
         
         if (memes.length >0){

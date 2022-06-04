@@ -95,7 +95,7 @@ export default function Home() {
         return
       }
       
-      console.log(fundedamount)
+     
       const funded = await bundlrInstance.fund(fundedamount)
       setLoading(false)
       fetchBalance()
@@ -131,7 +131,7 @@ export default function Home() {
      
       const tx= await contractWithProvider.IsAMember(person)
      
-      console.log(tx)
+    
       if(tx) {
      
         setAMember(true)
@@ -139,7 +139,7 @@ export default function Home() {
       else{
         setAMember(false)
       }
-      console.log(AMember)
+      
     } catch (e) {
       console.log(e)
       setAMember(false)
@@ -167,7 +167,7 @@ const renderButton = () => {
     )
   }
   if( AMember &&  balance <= 0.01) {
-    console.log(AMember)
+    
     return (
       <div style={{textAlign:"center",height:"80vh",top:"50%", left:"50%", display:"flex", alignItems:"center",justifyContent:"center" ,flexDirection:"column"}}>
           You are a Now a member. <br/>

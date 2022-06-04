@@ -39,7 +39,7 @@ export default function Funds () {
     useEffect(() => { 
         if(counter == 1){
           
-            console.log("first time")
+           
             counter +=1
         }
        
@@ -49,7 +49,7 @@ export default function Funds () {
 
         if(!AMember){
             checkIfAMember();
-            console.log(AMember)
+           
             if (counter == 2) {
                 fetchBalanceOfMember();
             }
@@ -61,7 +61,7 @@ export default function Funds () {
 
     const checkIfAMember = async () => {
         try {
-            console.log(person)
+           
             const tx= await contractWithProvider.IsAMember(person)
             
             console.log(tx)
@@ -72,7 +72,7 @@ export default function Funds () {
             else{
             setAMember(false)
             }
-            console.log(AMember)
+          
         } catch (e) {
             console.log(e)
             setAMember(false)
@@ -111,7 +111,7 @@ export default function Funds () {
             return
           }
           
-        //   console.log(fundedamount)
+      
           const funded = await bundlrInstance.fund(fundedamount)
           setLoading(false)
           fetchBalance()
@@ -122,18 +122,11 @@ export default function Funds () {
     }
     const  withdrawFromWallet = async () => {
         try {
-            console.log(document.getElementById("withdraw").value)
+           
            
             if (!withdrawal  ) return
             setLoading(true)
           const withdrawalamount = new BigNumber(withdrawal).multipliedBy(bundlrInstance.currencyConfig.base[1])
-        //   if(withdrawalamount.isLessThan(1)){
-        //     window.alert("NOT ENOUGH")
-        //     return
-        //   }
-          
-        //   console.log(fundedamount)
-        console.log(withdrawalamount)
           const withdraw = await bundlrInstance.withdrawBalance(withdrawalamount)
           setLoading(false)
           fetchBalance()
@@ -179,7 +172,7 @@ export default function Funds () {
           )
         }
         if(haveInitialised) {
-          console.log(AMember)
+   
           return (
             <div className='container-fluid'>
 

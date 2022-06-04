@@ -138,13 +138,13 @@ const fetchMyMemes = async () => {
                 // unstarring
                 const data= await contractWithSigner.RemoveStarMeme(id)
                 await data.wait()
-                await fetchAllMemes();
+                await fetchMyMemes();
                 // setStarToggler(false)
             }
             else {
                 const data= await contractWithSigner.StarMeme(id)
                 await data.wait()
-                await fetchAllMemes();
+                await fetchMyMemes();
                 // setStarToggler(true)
             }
             setLoadingStar(false)
@@ -154,22 +154,27 @@ const fetchMyMemes = async () => {
         }
     }
     const download = (e,name) => {
+        try {
+            axios({
+                url: e, //your url
+                method: 'GET',
+                responseType: 'blob', // important
+            }).then((response) => {
+                const url = window.URL.createObjectURL(new Blob([response.data]));
+                const link = document.createElement('a');
+                link.href = url;
+                  link.setAttribute("download", name+".png" ); 
+                  document.body.appendChild(link);
+                  link.click();
+                
+              });
+             
+        } catch (error) {
+            console.log("error")
+        }
         
-        axios({
-            url: e, //your url
-            method: 'GET',
-            responseType: 'blob', // important
-        }).then((response) => {
-            const url = window.URL.createObjectURL(new Blob([response.data]));
-            const link = document.createElement('a');
-            link.href = url;
-              link.setAttribute("download", name+".png" ); 
-              document.body.appendChild(link);
-              link.click();
-            
-          });
-         
-      };
+        
+    }
     const LikeMeme = async (id,bool) =>{
         try {
             setLoadingLike(true)
@@ -177,14 +182,14 @@ const fetchMyMemes = async () => {
                 // unliking
                 const data= await contractWithSigner.UnLikeMeme(id)
                 await data.wait()
-                await fetchAllMemes(); 
-            //    setLikeToggler(false)
+                await fetchMyMemes(); 
+           
             }
             else {
                 const data= await contractWithSigner.LikeMeme(id)
                 await data.wait()
-                await fetchAllMemes();
-                // setLikeToggler(true)
+                await fetchMyMemes();
+               
             }
             setLoadingLike(false)
 

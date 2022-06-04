@@ -66,7 +66,7 @@ export default function Starred () {
             else{
             setAMember(false)
             }
-            console.log(AMember)
+           
         } catch (e) {
             console.log(e)
             setAMember(false)
@@ -136,7 +136,7 @@ export default function Starred () {
     const StarMeme = async (id,bool) =>{
         try {
             setLoading(true)
-            console.log(Startoggler)
+           
             if (bool == true) {
                 // unstarring
                 const data= await contractWithSigner.RemoveStarMeme(id)

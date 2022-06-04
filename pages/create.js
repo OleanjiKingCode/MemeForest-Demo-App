@@ -52,7 +52,7 @@ export default function Create () {
     useEffect(() => { 
         if(counter == 1){
             initialize()
-            console.log("first time")
+          
             counter +=1
         }
        
@@ -62,7 +62,7 @@ export default function Create () {
 
         if(!AMember){
             checkIfAMember();
-            console.log(AMember)
+            
             if (counter == 2) {
                 fetchBalanceOfMember();
             }
@@ -74,7 +74,7 @@ export default function Create () {
 
     const checkIfAMember = async () => {
         try {
-            console.log(person)
+           
             const tx= await contractWithProvider.IsAMember(person)
             
             console.log(tx)
@@ -85,7 +85,7 @@ export default function Create () {
             else{
             setAMember(false)
             }
-            console.log(AMember)
+            
         } catch (e) {
             console.log(e)
             setAMember(false)
@@ -138,8 +138,7 @@ export default function Create () {
             let uploadTwo = await bundlrInstance.uploader.upload(data, [{name: "Content-Type", value: "text/plain"}])
             const MemeInfo = `https://arweave.net/${uploadTwo.data.id}`
            
-            console.log(data)
-            console.log(MemeInfo)
+           
             CreateMemes(MemeInfo,valueExt);
             
         } catch (e) {
@@ -158,13 +157,14 @@ export default function Create () {
 
     
     function OnFileChange(e) {
-        const file = e.target.files[0]
-        // console.log("inhere")
+        try {
+            const file = e.target.files[0]
+       
         const fie = e.target.files[0].name
-        // console.log(fie)
+       
         if(fie){
             const extension = fie.slice((Math.max(0, fie.lastIndexOf(".")) || Infinity) + 1);
-            // console.log(extension)
+           
             if (extension==="mp4" || extension==="mkv" || extension ==="avi" || extension ==="m4a"){
                 setIsVideo(true);
                 setIsImage(false);
@@ -188,6 +188,10 @@ export default function Create () {
             }
             reader.readAsArrayBuffer(file)
         }
+        } catch (error) {
+           console.log(error )
+        }
+        
     }
     const renderButton = () =>{
         if(!AMember){
