@@ -58,7 +58,7 @@ export default function Starred () {
             
             const tx= await contractWithProvider.IsAMember(person)
             
-            console.log(tx)
+           
             if(tx) {
             
             setAMember(true)

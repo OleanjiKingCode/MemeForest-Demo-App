@@ -64,7 +64,7 @@ export default function Funds () {
            
             const tx= await contractWithProvider.IsAMember(person)
             
-            console.log(tx)
+           
             if(tx) {
             
             setAMember(true)

@@ -57,7 +57,7 @@ const checkIfAMember = async () => {
         
         const tx= await contractWithProvider.IsAMember(person)
         
-        console.log(tx)
+       
         if(tx) {
         
         setAMember(true)
@@ -65,7 +65,7 @@ const checkIfAMember = async () => {
         else{
         setAMember(false)
         }
-        console.log(AMember)
+        
     } catch (e) {
         console.log(e)
         setAMember(false)
