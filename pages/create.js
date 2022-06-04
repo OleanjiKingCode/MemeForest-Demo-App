@@ -126,8 +126,8 @@ export default function Create () {
 
             let upload = await bundlrInstance.uploader.upload(Image, [{name: "Content-Type", value: valueExt}])
             
-            setFileURL(`http://arweave.net/${upload.data.id}`)
-            const file = `http://arweave.net/${upload.data.id}`
+            setFileURL(`https://arweave.net/${upload.data.id}`)
+            const file = `https://arweave.net/${upload.data.id}`
 
             const data = JSON.stringify ({
                 nameOfFile, 
@@ -136,7 +136,7 @@ export default function Create () {
             })
             setNumberOfLoading(2)
             let uploadTwo = await bundlrInstance.uploader.upload(data, [{name: "Content-Type", value: "text/plain"}])
-            const MemeInfo = `http://arweave.net/${uploadTwo.data.id}`
+            const MemeInfo = `https://arweave.net/${uploadTwo.data.id}`
            
             console.log(data)
             console.log(MemeInfo)

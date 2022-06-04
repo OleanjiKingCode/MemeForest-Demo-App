@@ -7,7 +7,6 @@ import { useContract, useProvider,useSigner,useAccount,useBalance,useConnect  } 
 import {MemeForestAddress} from '../constant'
 import { useEffect, useRef, useState, useContext } from "react";
 import { MainContext } from '../context';
-import { ethers,providers, Contract } from "ethers";
 import MEME from '../artifacts/contracts/MemeForest.sol/MemeForest.json'
 import 'bootstrap/dist/css/bootstrap.css'
 import axios from "axios"
@@ -24,7 +23,6 @@ export default function Feed () {
     const[loadingStar, setLoadingStar] = useState(false)
     const[memberDetails,setMemberDetails] = useState([])
     const[loadingLike, setLoadingLike] = useState(false)
-    const [IsPicture, setIsPicture] = useState(false)
     const provider = useProvider()
     const { data: signer} = useSigner()
   
@@ -48,9 +46,14 @@ export default function Feed () {
             const data= await contractWithProvider.fetchAllMemes();
             const tx = await Promise.all(data.map(async i => {
                 const Info = await axios.get(i.Memeinfo)
+                // const delay = ms => new Promise(res => setTimeout(res, ms));
+                // await delay(10000);
+                
                 const StarAnswer= await contractWithProvider.WhatDidIStar(i.fileId,person);
+                
                 const LikeAnswer= await contractWithProvider.WhatDidILike(i.fileId,person);
-                // (i.Info.data.image).split('/')[0] === 'image'? setIsPicture(true) : setIsPicture(false)
+                console.log("here")
+               
                 
                 let List = {
                     
@@ -66,10 +69,15 @@ export default function Feed () {
                     Description:Info.data.DescriptionOfFile,
                     DidMemberStarMe: StarAnswer,
                     DidMemberLikeMe:LikeAnswer
+                   
                 }
+                console.log("here too")
                 return List
+                
             }));
             setMemes(tx);
+            const delay = ms => new Promise(res => setTimeout(res, ms));
+                await delay(7000);
             const ata= await contractWithProvider.fetchMembers();
     
             const txn = await Promise.all(ata.map(async i =>{
@@ -355,13 +363,21 @@ export default function Feed () {
             ) 
         }
 
-        if(memes.length == 0) {
+        else if(memes.length == 0) {
             return (
                 <h4 style={{textAlign:"center"}}>
                     There are no Memes For Display
                 </h4>
             )
         }
+        else {
+            return (
+                <h1>
+                <FaSpinner icon="spinner" className={styles.spinner} />
+            </h1>
+            )
+        }
+
     }
 
     return (

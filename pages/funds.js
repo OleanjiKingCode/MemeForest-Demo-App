@@ -27,13 +27,6 @@ export default function Funds () {
     const[loading, setLoading] = useState(false)
     const [haveInitialised,setHaveInitialised] = useState(false)
     const provider = useProvider()
-    
-    const { data: signer, isError, isLoading } = useSigner()
-    const contractWithSigner = useContract({
-        addressOrName: MemeForestAddress,
-        contractInterface: MEME.abi,
-        signerOrProvider: signer,
-    })
 
     const contractWithProvider = useContract({
         addressOrName: MemeForestAddress,
