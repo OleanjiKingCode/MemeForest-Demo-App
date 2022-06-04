@@ -297,6 +297,19 @@ to {
   border-left: 4px #bbe012e3 solid;
   cursor: pointer;
 }
+.feedback{
+  text-align: center;
+  margin: 20px;
+  transform: translateY(40px);
+  color: white;
+}
+.feedback:hover{
+
+  cursor: pointer;
+  color: rgb(61, 60, 60);
+  
+  
+}
 .hoverMeme {
   text-align: center;
   margin: 20px;

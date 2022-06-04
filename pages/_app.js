@@ -141,7 +141,7 @@ function MyApp({ Component, pageProps }) {
             </Link>
 
             <Link href="https://forms.gle/ver9b7MBhrZ17pPi6">
-              <div  className={styles.hoverMeme} /*className='mx-4 my-5 px-4 py-2 '*/ style={{ fontWeight:"500", borderRadius:"50px"}}>
+              <div  className={styles.feedback} /*className='mx-4 my-5 px-4 py-2 '*/ style={{ fontWeight:"500", borderRadius:"50px"}}>
                Feedback
               </div>
             </Link>
