@@ -48,7 +48,8 @@ function MyApp({ Component, pageProps }) {
   const [balance , setBalance] = useState(0)
   
     async function initialize(){
-      await window.ethereum.enable()
+      try {
+        await window.ethereum.enable()
 
       const provider = new providers.Web3Provider(window.ethereum);
       await provider._ready()
@@ -64,12 +65,21 @@ function MyApp({ Component, pageProps }) {
       setBundlrInstance(bundlr)
       bundlrRef.current = bundlr
       fetchBalance()
+      } catch (e) {
+        console.log(e)
+      }
+      
     }
 
     async function  fetchBalance() { 
-      const bal = await bundlrRef.current.getLoadedBalance()
-        
-      setBalance(utils.formatEther(bal.toString()))
+      try {
+        const bal = await bundlrRef.current.getLoadedBalance()
+
+        setBalance(utils.formatEther(bal.toString()))
+      } catch (error) {
+        console.log(error)
+      }
+     
     }
 
     return (
@@ -127,6 +137,12 @@ function MyApp({ Component, pageProps }) {
             <Link href="/create">
               <div  className={styles.hoverMeme} /*className='mx-4 my-5 px-4 py-2 '*/ style={{ fontWeight:"500", borderRadius:"50px"}}>
                 Create Meme
+              </div>
+            </Link>
+
+            <Link href="https://forms.gle/ver9b7MBhrZ17pPi6">
+              <div  className={styles.hoverMeme} /*className='mx-4 my-5 px-4 py-2 '*/ style={{ fontWeight:"500", borderRadius:"50px"}}>
+               Feedback
               </div>
             </Link>
             
