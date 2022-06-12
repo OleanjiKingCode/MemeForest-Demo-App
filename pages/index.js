@@ -292,9 +292,9 @@ const renderButton = () => {
         <meta name="description" content="By Oleanji" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-    <div className={styles.topper}>
-    <img src='./LogoForest.png'  style={{width:"283px", height:"107px", marginTop:"-20px"}}/>
-      <div className={styles.connect}>
+    <div className='row inline-block align-items-center ' style={{justifyContent:"space-between",flexDirection:"column"}}>
+    <img className='col-md-3' src='./LogoForest.png'  style={{width:"283px", height:"107px", marginTop:"-20px"}}/>
+      <div className='col-md-6'>
         <ConnectButton />
       </div>
     </div>
