@@ -11,6 +11,7 @@ import BigNumber from 'bignumber.js';
 import { ethers,providers, Contract } from "ethers";
 import MEME from '../artifacts/contracts/MemeForest.sol/MemeForest.json'
 import { FaSpinner } from 'react-icons/fa';
+import PageLoader from 'next/dist/client/page-loader';
 
 export default function Home() {
   const {
@@ -29,7 +30,7 @@ export default function Home() {
   const [AMember,setAMember] = useState(false)
 
   const[memberDetails,setMemberDetails] = useState([])
-  
+  const[loadingpage,setLoadingPage] = useState(false)
   const provider = useProvider()
   const { data: signer } = useSigner()
   const contractWithSigner = useContract({
@@ -46,7 +47,7 @@ export default function Home() {
      
   useEffect(() => {
     
-
+        PageLoad();
         if(!AMember){
            checkIfAMember();
         
@@ -56,7 +57,16 @@ export default function Home() {
         }
     }, [AMember]);
 
-
+    const PageLoad = async () =>{
+      try {
+          setLoadingPage(true)
+          const delay = ms => new Promise(res => setTimeout(res, ms));
+          await delay(7000);
+          setLoadingPage(false)
+      } catch (e) {
+          console.log(e)
+      }
+  }
   const joinMembership = async () => {
     try {
       setLoading(true)
@@ -244,36 +254,50 @@ const renderButton = () => {
 
   if(!AMember){
     return (
-      <div style={{textAlign:"center",height:"80vh",top:"50%", left:"50%", display:"flex", alignItems:"center",justifyContent:"center" ,flexDirection:"column"}}>
-        <h2 style={{}}>
-          Welcome To MemeForest
-        </h2>
-        <input
-          placeholder='Enter Any Name'
-          type="text"
-          onChange={e => setName(e.target.value)}
-          style={{padding:"10px", border:"1px solid black" , borderRadius:"10px",width:"400px", fontSize:"10px"}}
-        />
-        
-        {
-          loading? 
-            (
-              <button   style={{border:"none", textAlign:"center", 
-                  padding:"10px 20px",color:"white",  fontSize:"10px", 
-                  backgroundColor:"blue",marginTop:"20px", marginLeft:"20px", borderRadius:"10px"}}>
-                   <FaSpinner icon="spinner" className={styles.spinner} />
-              </button>
-            ) 
-            :
-            (
-              <button onClick={joinMembership}  style={{border:"none", textAlign:"center", 
-                padding:"10px 20px",color:"white",  fontSize:"10px", 
-                backgroundColor:"blue",marginTop:"20px", marginLeft:"20px", borderRadius:"10px"}}>
-                  Become A Member
-              </button>    
-            )
-        }       
-    </div>
+
+      <div>
+          {
+          loadingpage ? 
+          ( 
+              <div style={{fontSize:"100px", textAlign:"center"}}>
+                  <FaSpinner icon="spinner" className={styles.spinner} />
+              </div>
+          ) 
+          : 
+          (
+            <div style={{textAlign:"center",height:"80vh",top:"50%", left:"50%", display:"flex", alignItems:"center",justifyContent:"center" ,flexDirection:"column"}}>
+              <h2 style={{}}>
+                Welcome To MemeForest
+              </h2>
+              <input
+                placeholder='Enter Any Name'
+                type="text"
+                onChange={e => setName(e.target.value)}
+                style={{padding:"10px", border:"1px solid black" , borderRadius:"10px",width:"400px", fontSize:"10px"}}
+              />
+              
+              {
+                loading? 
+                  (
+                    <button   style={{border:"none", textAlign:"center", 
+                        padding:"10px 20px",color:"white",  fontSize:"10px", 
+                        backgroundColor:"blue",marginTop:"20px", marginLeft:"20px", borderRadius:"10px"}}>
+                        <FaSpinner icon="spinner" className={styles.spinner} />
+                    </button>
+                  ) 
+                  :
+                  (
+                    <button onClick={joinMembership}  style={{border:"none", textAlign:"center", 
+                      padding:"10px 20px",color:"white",  fontSize:"10px", 
+                      backgroundColor:"blue",marginTop:"20px", marginLeft:"20px", borderRadius:"10px"}}>
+                        Become A Member
+                    </button>    
+                  )
+              }       
+          </div>
+          )
+        }
+      </div>
     )
   }
 }

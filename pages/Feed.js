@@ -43,7 +43,7 @@ export default function Feed () {
         try {
             setLoadingPage(true)
             const delay = ms => new Promise(res => setTimeout(res, ms));
-            await delay(7000);
+            await delay(20000);
             setLoadingPage(false)
         } catch (e) {
             console.log(e)
