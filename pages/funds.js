@@ -9,6 +9,7 @@ import MEME from '../artifacts/contracts/MemeForest.sol/MemeForest.json'
 import { useRouter } from 'next/router';
 import BigNumber from 'bignumber.js';
 import { FaSpinner } from 'react-icons/fa';
+import PageLoader from 'next/dist/client/page-loader';
 
 
 export default function Funds () { 
@@ -27,7 +28,7 @@ export default function Funds () {
     const[loading, setLoading] = useState(false)
     const [haveInitialised,setHaveInitialised] = useState(false)
     const provider = useProvider()
-
+    const[loadingpage,setLoadingPage] = useState(false)
     const contractWithProvider = useContract({
         addressOrName: MemeForestAddress,
         contractInterface: MEME.abi,
@@ -42,7 +43,7 @@ export default function Funds () {
            
             counter +=1
         }
-       
+       PageLoad();
     } ,[])
     useEffect(() => {
 
@@ -58,7 +59,16 @@ export default function Funds () {
         }
     }, [AMember]);
    
-
+    const PageLoad = async () =>{
+      try {
+          setLoadingPage(true)
+          const delay = ms => new Promise(res => setTimeout(res, ms));
+          await delay(7000);
+          setLoadingPage(false)
+      } catch (e) {
+          console.log(e)
+      }
+  }
     const checkIfAMember = async () => {
         try {
            
@@ -146,15 +156,28 @@ export default function Funds () {
     const renderButton = () => {
         if(!AMember){
             return (
-                <div style={{ padding:"20px", textAlign:"center",margin:"5px 0 5px 0" ,height:"80vh",top:"50%", left:"50%", display:"flex", alignItems:"center",justifyContent:"center" ,flexDirection:"column" }}> 
-                    <div style={{fontSize:"18px"}}>
-                        Go Back Home and Register before you can interact with wallet
+              <div>
+              {
+              loadingpage ? 
+                ( 
+                    <div style={{fontSize:"100px", textAlign:"center"}}>
+                        <FaSpinner icon="spinner" className={styles.spinner} />
                     </div>
-                    <button onClick={gohome} style={{padding:"10px 15px", marginLeft:"10px",color:"black",marginTop:"10px",
-                    backgroundColor:"greenyellow",fontSize:"14px",borderRadius:"10px"}}> 
-                        Home
-                    </button>
-                </div>
+                ) 
+                : 
+                (
+                  <div style={{ padding:"20px", textAlign:"center",margin:"5px 0 5px 0" ,height:"80vh",top:"50%", left:"50%", display:"flex", alignItems:"center",justifyContent:"center" ,flexDirection:"column" }}> 
+                      <div style={{fontSize:"18px"}}>
+                          Go Back Home and Register before you can interact with wallet
+                      </div>
+                      <button onClick={gohome} style={{padding:"10px 15px", marginLeft:"10px",color:"black",marginTop:"10px",
+                      backgroundColor:"greenyellow",fontSize:"14px",borderRadius:"10px"}}> 
+                          Home
+                      </button>
+                  </div>
+                )
+              }
+        </div>
             )
         }
         if (AMember && !haveInitialised) {

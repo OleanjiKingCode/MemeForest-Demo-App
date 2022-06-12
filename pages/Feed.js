@@ -1,12 +1,9 @@
 import Head from 'next/head'
-import Image from 'next/image'
-import Web3Modal from "web3modal";
 import styles from '../styles/Home.module.css'
 import { ConnectButton } from '@rainbow-me/rainbowkit';
 import { useContract, useProvider,useSigner,useAccount,useBalance,useConnect  } from 'wagmi'
 import {MemeForestAddress} from '../constant'
 import { useEffect, useRef, useState, useContext } from "react";
-import { MainContext } from '../context';
 import MEME from '../artifacts/contracts/MemeForest.sol/MemeForest.json'
 import 'bootstrap/dist/css/bootstrap.css'
 import axios from "axios"
@@ -18,14 +15,13 @@ export default function Feed () {
    
     const { data} = useAccount()
     const person = data?.address;
-   
     const [memes,setMemes] = useState([])
     const[loadingStar, setLoadingStar] = useState(false)
     const[memberDetails,setMemberDetails] = useState([])
     const[loadingLike, setLoadingLike] = useState(false)
     const provider = useProvider()
     const { data: signer} = useSigner()
-  
+    const[loadingpage,setLoadingPage] = useState(false)
     const contractWithSigner = useContract({
         addressOrName: MemeForestAddress,
         contractInterface: MEME.abi,
@@ -40,7 +36,19 @@ export default function Feed () {
     useEffect(() => {
         
             fetchAllMemes();
+            PageLoad();
     }, []);
+
+    const PageLoad = async () =>{
+        try {
+            setLoadingPage(true)
+            const delay = ms => new Promise(res => setTimeout(res, ms));
+            await delay(7000);
+            setLoadingPage(false)
+        } catch (e) {
+            console.log(e)
+        }
+    }
     const fetchAllMemes = async () => {
         try {
             const data= await contractWithProvider.fetchAllMemes();
@@ -363,21 +371,29 @@ export default function Feed () {
             ) 
         }
 
-        else if(memes.length == 0) {
+        if(memes.length == 0) {
             return (
-                <h4 style={{textAlign:"center"}}>
-                    There are no Memes For Display
-                </h4>
-            )
-        }
-        else {
-            return (
-                <h1>
-                <FaSpinner icon="spinner" className={styles.spinner} />
-            </h1>
-            )
-        }
+                <div className='row d-flex align-items-center justify-content-center' style={{flexDirection:"row"}}>
 
+                
+                    {
+                        loadingpage ? 
+                        ( 
+                            <div style={{fontSize:"100px", textAlign:"center"}}>
+                                <FaSpinner icon="spinner" className={styles.spinner} />
+                            </div>
+                        ) 
+                        : 
+                        (
+                            <h4 style={{textAlign:"center"}}>
+                                There are no Memes For Display
+                            </h4>
+                        )
+                    }
+                </div>
+            )
+        }
+        
     }
 
     return (

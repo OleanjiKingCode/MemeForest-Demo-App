@@ -24,7 +24,7 @@ export default function Creations () {
     const provider = useProvider()
     const { data: signer} = useSigner()
     const [myMemes,setMyMemes] = useState([])
-
+    const[loadingpage,setLoadingPage] = useState(false)
     const contractWithSigner = useContract({
         addressOrName: MemeForestAddress,
         contractInterface: MEME.abi,
@@ -41,6 +41,7 @@ export default function Creations () {
     useEffect(() => {
         
         fetchMyMemes();
+        PageLoad();
 }, []);
 
     useEffect(() => {
@@ -51,7 +52,16 @@ export default function Creations () {
         }
     }, [AMember]);
 
-
+    const PageLoad = async () =>{
+        try {
+            setLoadingPage(true)
+            const delay = ms => new Promise(res => setTimeout(res, ms));
+            await delay(7000);
+            setLoadingPage(false)
+        } catch (e) {
+            console.log(e)
+        }
+    }
 const checkIfAMember = async () => {
     try {
         
@@ -210,14 +220,28 @@ const fetchMyMemes = async () => {
     const renderButton = () => {
         if(!AMember){
             return (
-                <div style={{ padding:"20px", textAlign:"center",margin:"5px 0 5px 0",height:"80vh",top:"50%", left:"50%", display:"flex", alignItems:"center",justifyContent:"center" ,flexDirection:"column"  }}> 
-                    <div style={{fontSize:"18px"}}>
-                        Go Back Home and Register before Seeing Your Memes 
+                <div>
+                    {
+                    loadingpage ? 
+                    ( 
+                        <div style={{fontSize:"100px", textAlign:"center"}}>
+                            <FaSpinner icon="spinner" className={styles.spinner} />
+                        </div>
+                    ) 
+                    : 
+                    (
+                        <div style={{ padding:"20px", textAlign:"center",margin:"5px 0 5px 0",height:"80vh",top:"50%", left:"50%", display:"flex", alignItems:"center",justifyContent:"center" ,flexDirection:"column"  }}> 
+                        <div style={{fontSize:"18px"}}>
+                            Go Back Home and Register before Seeing Your Memes 
+                        </div>
+                        <button onClick={gohome} style={{padding:"10px 15px", marginLeft:"10px",color:"black",marginTop:"10px",
+                        backgroundColor:"greenyellow",fontSize:"14px",borderRadius:"10px"}}> 
+                            Home
+                        </button>
                     </div>
-                    <button onClick={gohome} style={{padding:"10px 15px", marginLeft:"10px",color:"black",marginTop:"10px",
-                    backgroundColor:"greenyellow",fontSize:"14px",borderRadius:"10px"}}> 
-                        Home
-                    </button>
+                    )
+                }
+               
                 </div>
             )
         }
@@ -225,14 +249,27 @@ const fetchMyMemes = async () => {
            if(myMemes.length == 0) 
            {
             return (
-                <div style={{ padding:"20px", textAlign:"center",margin:"5px 0 5px 0",height:"80vh",top:"50%", left:"50%", display:"flex", alignItems:"center",justifyContent:"center" ,flexDirection:"column"  }}> 
-                    <div style={{fontSize:"18px"}}>
-                        You have No Memes Go back to Create Memes 
-                    </div>
-                    <button onClick={create} style={{padding:"10px 15px", marginLeft:"10px",color:"black",marginTop:"10px",
-                    backgroundColor:"greenyellow",fontSize:"14px",borderRadius:"10px", border:"none"}}> 
-                        Create Meme
-                    </button>
+                <div>
+                    {
+                    loadingpage ? 
+                        ( 
+                            <div style={{fontSize:"100px", textAlign:"center"}}>
+                                <FaSpinner icon="spinner" className={styles.spinner} />
+                            </div>
+                        ) 
+                        : 
+                        (
+                            <div style={{ padding:"20px", textAlign:"center",margin:"5px 0 5px 0",height:"80vh",top:"50%", left:"50%", display:"flex", alignItems:"center",justifyContent:"center" ,flexDirection:"column"  }}> 
+                                <div style={{fontSize:"18px"}}>
+                                    You have No Memes Go back to Create Memes 
+                                </div>
+                                <button onClick={create} style={{padding:"10px 15px", marginLeft:"10px",color:"black",marginTop:"10px",
+                                backgroundColor:"greenyellow",fontSize:"14px",borderRadius:"10px", border:"none"}}> 
+                                    Create Meme
+                                </button>
+                            </div>
+                        )
+                    }
                 </div>
             )
            }
