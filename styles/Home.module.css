@@ -6,6 +6,7 @@
   padding:0 0  10px -10px;*/
   /* margin-left: 5px; */
   /* background-color:#f1f1f1  */
+ 
 }
 
 .table{
@@ -330,8 +331,9 @@ to {
 .topper{
   margin-left: 0px;
   position: fixed;
-  z-index: 999;
+  z-index: 9999;
   width:82%;
+  top: inherit;
   height: 100px;
   background-color: rgb(223, 223, 223);
   display: flex;
@@ -350,6 +352,53 @@ to {
   transform: translateX(-30px);
 }
 
+.Menu{
+  position: fixed;
+  right: 15px;
+  top: 15px;
+  z-index: 9997;
+  border: 0;
+  font-size: 24px;
+  transition: all 0.4s;
+  outline: none !important;
+  background-color: #14dd25;
+  color: #fff;
+  width: 40px;
+  height: 40px;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  line-height: 0;
+  border-radius: 50px;
+  cursor: pointer;
+  transition: all .4s ease;
+}
+.MenuClose{
+  position: fixed;
+  right: 15px;
+  top: 15px;
+  z-index: 9997;
+  border: 0;
+  font-size: 24px;
+  transition: all 0.4s;
+  outline: none !important;
+  color: #14dd25;
+  background-color: #fff;
+  width: 40px;
+  height: 40px;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  line-height: 0;
+  border-radius: 50px;
+  cursor: pointer;
+  transition: all .4s ease;
+  }
+.logos{
+  width:283px;
+  height:107px ;
+  margin-top:-20px;
+}
 
 
 
@@ -357,5 +406,35 @@ to {
   .grid {
     width: 100%;
     flex-direction: column;
+  }
+  .navbar{
+   position: fixed;
+   z-index: 9999;
+   margin-left: -999px;
+  transition: all .4s ease;
+  }
+  .navbarexp{
+    position: fixed;
+    z-index: 9999;
+    margin-left: 0px;
+    transition: all .4s ease;
+   }
+  .Menu, .MenuClose{
+    display: unset;
+    margin-top: 12px;
+    right: 8px;  
+  }
+  .logos{
+    width:142px;
+    height:54px ;
+    margin-top:-20px;
+   
+  }
+  .topper{
+    width: 100%;
+    z-index: 0;
+  }
+  .connect{
+    transform: translateX(-60px);
   }
 }

@@ -8,10 +8,9 @@ import {MemeForestAddress} from '../constant'
 import { useEffect, useRef, useState, useContext } from "react";
 import { MainContext } from '../context';
 import BigNumber from 'bignumber.js';
-import { ethers,providers, Contract } from "ethers";
 import MEME from '../artifacts/contracts/MemeForest.sol/MemeForest.json'
 import { FaSpinner } from 'react-icons/fa';
-import PageLoader from 'next/dist/client/page-loader';
+import { HiMenu } from "react-icons/hi";
 
 export default function Home() {
   const {
@@ -28,7 +27,8 @@ export default function Home() {
   const [loading,setLoading] = useState(false)
   const [haveInitialised,setHaveInitialised] = useState(false)
   const [AMember,setAMember] = useState(false)
-
+  const [clicked,setclicked] = useState(false)
+  const [toggle,setToggle] = useState(false)
   const[memberDetails,setMemberDetails] = useState([])
   const[loadingpage,setLoadingPage] = useState(false)
   const provider = useProvider()
@@ -156,7 +156,7 @@ export default function Home() {
     }
   }
 
-
+  
 const renderButton = () => {
 
   if (AMember && !haveInitialised) {
@@ -317,7 +317,8 @@ const renderButton = () => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
     <div className={styles.topper}>
-    <img src='./LogoForest.png'  style={{width:"283px", height:"107px", marginTop:"-20px"}}/>
+     
+      <img src='./LogoForest.png' className={styles.logos}/>
       <div className={styles.connect}>
         <ConnectButton />
       </div>
