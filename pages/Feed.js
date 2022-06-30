@@ -321,34 +321,49 @@ export default function Feed () {
                                                                         <button className={styles.ToggleButton2}  onClick={() => LikeMeme(card.Id, card.DidMemberLikeMe)}
                                                                         style={{borderRadius:"5px",border:"1px black solid",width:"90px",height:"30px",marginTop:"13px",display:"flex",alignItems:"center", justifyContent:"space-around"}}>
                                                                             {
-                                                                                loadingLike?
-                                                                                (
-                                                                                    
-                                                                                    <button className={styles.ToggleButton2Loading}  
-                                                                                    style={{borderRadius:"5px",border:"1px black solid",width:"90px",height:"30px",marginTop:"13px",display:"flex",alignItems:"center", justifyContent:"space-around"}}>
-                                                                                        <h4>
-                                                                                            <FaSpinner icon="spinner" className={styles.spinner} />
-                                                                                        </h4>
-                                                                                    </button>
-                                                                                ) 
-                                                                                :
-                                                                                (
+                                                                            
                                                                                     (card.DidMemberLikeMe == true) ?
                                                                                     (
-                                                                                        <>
-                                                                                        <img src='./filledLove.png' alt='STAR'  style={{width:"20px",height:"20px"}}  />
-                                                                                        {card.NumberOfLikes}
-                                                                                        </>
+                                                                                        loadingLike?
+                                                                                        (
+                                                                                            <button className={styles.ToggleButton2Loading}  
+                                                                                                style={{borderRadius:"5px",border:"1px black solid",width:"90px",height:"30px",marginTop:"13px",display:"flex",alignItems:"center", justifyContent:"space-around"}}>
+                                                                                                <h4>
+                                                                                                    <FaSpinner icon="spinner" className={styles.spinner} />
+                                                                                                </h4>
+                                                                                            </button>
+                                                                                        ) 
+                                                                                        :
+                                                                                        (
+                                                                                            <>
+                                                                                            <img src='./filledLove.png' alt='STAR'  style={{width:"20px",height:"20px"}}  />
+                                                                                            {card.NumberOfLikes}
+                                                                                            </>
+                                                                                        )
+                                                                                       
                                                                                     ) 
                                                                                     :
                                                                                     (
-                                                                                        
-                                                                                        <>
+                                                                                        loadingLike?
+                                                                                        (
+                                                                                            <button className={styles.ToggleButton2Loading}  
+                                                                                                style={{borderRadius:"5px",border:"1px black solid",width:"90px",height:"30px",marginTop:"13px",display:"flex",alignItems:"center", justifyContent:"space-around"}}>
+                                                                                                <h4>
+                                                                                                    <FaSpinner icon="spinner" className={styles.spinner} />
+                                                                                                </h4>
+                                                                                            </button>
+                                                                                        )
+                                                                                        :
+                                                                                        (
+                                                                                            <>
                                                                                                 <img src='./UnfilledLove.png' alt='STAR' style={{width:"20px",height:"20px"}}  />
                                                                                                 {card.NumberOfLikes}
                                                                                                 </>
+                                                                                        )
+                                                                                        
+                                                                                        
                                                                                     )
-                                                                                )   
+                                                                                   
                                                                             }
                                                                          </button>
                                                                 
