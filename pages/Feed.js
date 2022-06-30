@@ -259,24 +259,13 @@ export default function Feed () {
                                                     <div className='d-flex justify-content-between ' >
                                                     
                                                         
-                                                            {
-                                                                loadingStar ? 
-                                                                (
-                                                                    <button className={styles.ToggleButtonLoading} 
-                                                                    style={{borderRadius:"5px",border:"1px black solid",width:"90px",height:"30px",marginTop:"13px",display:"flex",alignItems:"center", justifyContent:"space-around"}}>
-                                                                <h4>
-                                                                <FaSpinner icon="spinner" className={styles.spinner} />
-                                                                </h4>
-                                                                    </button>
-                                                                ) 
-                                                                : 
-                                                                (
+                                                            
                                                                     
                                                                    
                                                                     <button className={styles.ToggleButton} onClick={() => StarMeme(card.Id, card.DidMemberStarMe)}
                                                                     style={{borderRadius:"5px",border:"1px black solid",width:"90px",height:"30px",marginTop:"13px",display:"flex",alignItems:"center", justifyContent:"space-around"}}>
-                                                                   {
-                                                                   // This was complicated for me when getting the logic lol
+                                                                   
+                                                                   {/* // This was complicated for me when getting the logic lol
                                                                         // so whatrs happening here is we wanna know 3 things: 
                                                                         // Did I star this Meme?
                                                                         // What Did I Star?
@@ -286,11 +275,22 @@ export default function Feed () {
                                                                         //     so i check using the id whether this person starred it already them if so show that 
                                                                         //     it has been starred then if not check if i clicked the button 
                                                                         //     if i did then show starred star 
-                                                                        //     if i have never starred this item before and i didnt click the button then show empty star
+                                                                        //     if i have never starred this item before and i didnt click the button then show empty star */}
 
-                                                                        
+                                                                        {
+                                                                            loadingStar ? 
+                                                                            (
+                                                                                <button className={styles.ToggleButtonLoading} 
+                                                                                style={{borderRadius:"5px",border:"1px black solid",width:"90px",height:"30px",marginTop:"13px",display:"flex",alignItems:"center", justifyContent:"space-around"}}>
+                                                                                    <h4>
+                                                                                    <FaSpinner icon="spinner" className={styles.spinner} />
+                                                                                    </h4>
+                                                                                </button>
+                                                                            ) 
+                                                                            : 
+                                                                            (
 
-                                                                            (card.DidMemberStarMe == true) ?
+                                                                                (card.DidMemberStarMe == true) ?
                                                                                (
                                                                                   
                                                                                    <>
@@ -306,52 +306,51 @@ export default function Feed () {
                                                                                    {card.NumberOfStars}
                                                                                    </>
                                                                                )
+                                                                            )
+
                                                                         
                                                                    }
                                                                     </button>
-                                                                   
-                                                                )
-                                                            }
+                                                            
                                                             
                                                             
                                                        
                                                        
                                                        
-                                                                {
-                                                                    loadingLike?
-                                                                    (
-                                                                        
-                                                                        <button className={styles.ToggleButton2Loading}  
-                                                                        style={{borderRadius:"5px",border:"1px black solid",width:"90px",height:"30px",marginTop:"13px",display:"flex",alignItems:"center", justifyContent:"space-around"}}>
-                                                                            <h4>
-                                                                                <FaSpinner icon="spinner" className={styles.spinner} />
-                                                                            </h4>
-                                                                        </button>
-                                                                    ) 
-                                                                    :
-                                                                    (
+                                                                
                                                                         <button className={styles.ToggleButton2}  onClick={() => LikeMeme(card.Id, card.DidMemberLikeMe)}
                                                                         style={{borderRadius:"5px",border:"1px black solid",width:"90px",height:"30px",marginTop:"13px",display:"flex",alignItems:"center", justifyContent:"space-around"}}>
                                                                             {
-                                                                                (card.DidMemberLikeMe == true) ?
+                                                                                loadingLike?
                                                                                 (
-                                                                                    <>
-                                                                                    <img src='./filledLove.png' alt='STAR'  style={{width:"20px",height:"20px"}}  />
-                                                                                    {card.NumberOfLikes}
-                                                                                    </>
+                                                                                    
+                                                                                    <button className={styles.ToggleButton2Loading}  
+                                                                                    style={{borderRadius:"5px",border:"1px black solid",width:"90px",height:"30px",marginTop:"13px",display:"flex",alignItems:"center", justifyContent:"space-around"}}>
+                                                                                        <h4>
+                                                                                            <FaSpinner icon="spinner" className={styles.spinner} />
+                                                                                        </h4>
+                                                                                    </button>
                                                                                 ) 
                                                                                 :
                                                                                 (
-                                                                                    
-                                                                                    <>
-                                                                                            <img src='./UnfilledLove.png' alt='STAR' style={{width:"20px",height:"20px"}}  />
-                                                                                            {card.NumberOfLikes}
-                                                                                            </>
-                                                                                )
+                                                                                    (card.DidMemberLikeMe == true) ?
+                                                                                    (
+                                                                                        <>
+                                                                                        <img src='./filledLove.png' alt='STAR'  style={{width:"20px",height:"20px"}}  />
+                                                                                        {card.NumberOfLikes}
+                                                                                        </>
+                                                                                    ) 
+                                                                                    :
+                                                                                    (
+                                                                                        
+                                                                                        <>
+                                                                                                <img src='./UnfilledLove.png' alt='STAR' style={{width:"20px",height:"20px"}}  />
+                                                                                                {card.NumberOfLikes}
+                                                                                                </>
+                                                                                    )
+                                                                                )   
                                                                             }
                                                                          </button>
-                                                                    )
-                                                                }
                                                                 
                                                                 
                                                                 
