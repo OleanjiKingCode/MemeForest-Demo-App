@@ -1,6 +1,4 @@
 import Head from 'next/head'
-import Image from 'next/image'
-import Web3Modal from "web3modal";
 import styles from '../styles/Home.module.css'
 import { ConnectButton } from '@rainbow-me/rainbowkit';
 import { useContract, useProvider,useSigner,useAccount,useBalance,useConnect  } from 'wagmi'
@@ -10,7 +8,6 @@ import { MainContext } from '../context';
 import BigNumber from 'bignumber.js';
 import MEME from '../artifacts/contracts/MemeForest.sol/MemeForest.json'
 import { FaSpinner } from 'react-icons/fa';
-import { HiMenu } from "react-icons/hi";
 
 export default function Home() {
   const {

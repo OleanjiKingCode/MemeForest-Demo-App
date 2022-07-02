@@ -1,5 +1,4 @@
 import '../styles/globals.css'
-import Head from 'next/head'
 import styles from "../styles/Home.module.css";
 import Link from "next/link"
 import 'bootstrap/dist/css/bootstrap.css'
@@ -14,7 +13,6 @@ import 'bootstrap/dist/css/bootstrap.css'
 import { chain, createClient, WagmiProvider } from 'wagmi';
 import {WebBundlr} from '@bundlr-network/client';
 import { useEffect, useRef, useState, useContext } from "react";
-import { fetchBalance } from '@wagmi/core';
 import { utils } from 'ethers';
 import { MainContext } from '../context';
 import { providers } from "ethers"

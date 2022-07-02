@@ -1,5 +1,4 @@
 import Head from 'next/head'
-import Web3Modal from "web3modal";
 import styles from '../styles/Home.module.css'
 import { ConnectButton } from '@rainbow-me/rainbowkit';
 import { useContract, useProvider,useSigner,useAccount,useBalance,useConnect  } from 'wagmi'
@@ -10,7 +9,6 @@ import 'bootstrap/dist/css/bootstrap.css'
 import axios from "axios"
 import { useRouter } from 'next/router';
 import { FaSpinner } from 'react-icons/fa';
-import PageLoader from 'next/dist/client/page-loader';
     
     
     

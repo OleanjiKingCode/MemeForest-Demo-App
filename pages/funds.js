@@ -9,7 +9,6 @@ import MEME from '../artifacts/contracts/MemeForest.sol/MemeForest.json'
 import { useRouter } from 'next/router';
 import BigNumber from 'bignumber.js';
 import { FaSpinner } from 'react-icons/fa';
-import PageLoader from 'next/dist/client/page-loader';
 
 
 export default function Funds () { 
