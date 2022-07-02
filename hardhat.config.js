@@ -2,7 +2,6 @@ require("@nomiclabs/hardhat-waffle");
 require("dotenv").config({ path: ".env" });
 
 const ALCHEMY_ID = process.env.ALCHEMY_ID;
-// const INFURA_ID = process.env.INFURA_ID;
 const MUMBAI_PRIVATE_KEY = process.env.MUMBAI_PRIVATE_KEY;
 
 module.exports = {
